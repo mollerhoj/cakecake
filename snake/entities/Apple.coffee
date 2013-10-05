@@ -1,3 +1,9 @@
 class Apple extends Entity
+
   step: ->
-    @move_towards(320/2,240/2,2)
+    ni = @nearest('SnakeBody')
+    if ni
+      @move_towards(ni.x,ni.y,0.5)
+    while (@hit('SnakeBody'))
+      @move_towards(ni.x,ni.y,-0.5)
+      

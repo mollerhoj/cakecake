@@ -9,7 +9,10 @@ class GameController extends Entity
     @world.spawn('Apple',100,100)
 
   draw: ->
+    @x = Keyboard.MOUSE_X
+    @y = Keyboard.MOUSE_Y
     @text.string = GameController.score
+    @text.string = @direction_to(320/2,240/2)
     @text.draw()
 
 

@@ -172,9 +172,19 @@
       return null;
     };
 
-    Entity.prototype.move_towards = function(x, y, speed) {};
+    Entity.prototype.move_towards = function(x, y, speed) {
+      var dir;
+      dir = this.direction_to(x, y);
+      this.x += Math.cos(dir / 180 * Math.PI) * speed;
+      return this.y -= Math.sin(dir / 180 * Math.PI) * speed;
+    };
 
-    Entity.prototype.direction_to = function(x, y) {};
+    Entity.prototype.direction_to = function(x, y) {
+      var dx, dy;
+      dx = x - this.x;
+      dy = y - this.y;
+      return -Math.atan2(dy, dx) * 180 / Math.PI;
+    };
 
     Entity.prototype.hits = function(other, x, y) {
       var result;
@@ -190,6 +200,24 @@
       this.x -= x;
       this.y -= y;
       return result;
+    };
+
+    Entity.prototype.nearest = function(c) {
+      var distance, e, nearest, shortest, _i, _len, _ref;
+      shortest = 9999;
+      nearest = null;
+      _ref = this.world.all_entities();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        e = _ref[_i];
+        if (e.name === c) {
+          distance = this.objects_distance(this, e);
+          if (distance < shortest) {
+            nearest = e;
+            shortest = distance;
+          }
+        }
+      }
+      return nearest;
     };
 
     Entity.prototype.hit = function(c) {
@@ -864,7 +892,16 @@
     }
 
     Apple.prototype.step = function() {
-      return this.move_towards(320 / 2, 240 / 2, 2);
+      var ni, _results;
+      ni = this.nearest('SnakeBody');
+      if (ni) {
+        this.move_towards(ni.x, ni.y, 0.5);
+      }
+      _results = [];
+      while (this.hit('SnakeBody')) {
+        _results.push(this.move_towards(ni.x, ni.y, -0.5));
+      }
+      return _results;
     };
 
     return Apple;
@@ -892,7 +929,10 @@
     };
 
     GameController.prototype.draw = function() {
+      this.x = Keyboard.MOUSE_X;
+      this.y = Keyboard.MOUSE_Y;
       this.text.string = GameController.score;
+      this.text.string = this.direction_to(320 / 2, 240 / 2);
       return this.text.draw();
     };
 
@@ -1005,7 +1045,7 @@
       if (this.time > 10) {
         this.solid = true;
       }
-      if (this.time > 60 + GameController.score * 10) {
+      if (this.time > 60) {
         return this.destroy();
       }
     };

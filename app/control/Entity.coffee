@@ -33,12 +33,14 @@ class Entity
     return null
 
   move_towards: (x,y,speed) ->
-    #dir = @direction_to(x,y)
-    
+    dir = @direction_to(x,y)
+    @x += Math.cos(dir/180*Math.PI)*speed
+    @y -= Math.sin(dir/180*Math.PI)*speed
     
   direction_to: (x,y) ->
-    #dx = x - @x;
-    #dy = y - @y;
+    dx = x - @x;
+    dy = y - @y;
+    -Math.atan2(dy,dx)*180/Math.PI
     
 
   #Checks if this entity is touching another entity
@@ -49,6 +51,17 @@ class Entity
     @x -= x
     @y -= y
     return result
+
+  nearest: (c) ->
+    shortest = 9999
+    nearest = null
+    for e in @world.all_entities()
+      if e.name == c
+        distance = @objects_distance(this,e) 
+        if distance < shortest
+          nearest = e
+          shortest = distance
+    return nearest
 
   hit: (c) ->
     for e in @world.all_entities()
