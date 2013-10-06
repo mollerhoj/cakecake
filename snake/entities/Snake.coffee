@@ -36,12 +36,12 @@ class Snake extends Entity
     @world.spawn('SnakeBody',@x-1+rx,@y-1+ry)
 
     if @x < 0
-      @x = 320
+      @x = AppData.width 
     if @y < 0
-      @y = 240
-    if @x > 320
+      @y = AppData.height
+    if @x > AppData.width
       @x = 0
-    if @y > 240
+    if @y > AppData.height
       @y = 0
 
     @hits_self = false
@@ -51,7 +51,7 @@ class Snake extends Entity
 
 
   outside: ->
-    return @x < 0 || @x > 320 || @y < 0 || @y > 240
+    return @x < 0 || @x > AppData.width || @y < 0 || @y > AppData.height
 
   draw: ->
     if !@hits_self

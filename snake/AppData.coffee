@@ -1,7 +1,7 @@
 class AppData
   @game_name = "snake"
   @width = 320
-  @height = 240
+  @height = 480
   @scale = 2
   @grid_on = false
   @entities:

@@ -904,13 +904,13 @@
         this.move_towards(ni.x, ni.y, 0.5);
       }
       if (this.hit('SnakeBody')) {
-        GameController.lives -= 1;
         this.die();
       }
       if (GameController.lives < 0) {
         this.world.reset();
       }
       if (this.hit('Snake')) {
+        GameController.lives -= 1;
         return this.die();
       }
     };
@@ -1036,15 +1036,15 @@
       ry = Math.random() * 2;
       this.world.spawn('SnakeBody', this.x - 1 + rx, this.y - 1 + ry);
       if (this.x < 0) {
-        this.x = 320;
+        this.x = AppData.width;
       }
       if (this.y < 0) {
-        this.y = 240;
+        this.y = AppData.height;
       }
-      if (this.x > 320) {
+      if (this.x > AppData.width) {
         this.x = 0;
       }
-      if (this.y > 240) {
+      if (this.y > AppData.height) {
         this.y = 0;
       }
       this.hits_self = false;
@@ -1056,7 +1056,7 @@
     };
 
     Snake.prototype.outside = function() {
-      return this.x < 0 || this.x > 320 || this.y < 0 || this.y > 240;
+      return this.x < 0 || this.x > AppData.width || this.y < 0 || this.y > AppData.height;
     };
 
     Snake.prototype.draw = function() {
@@ -1439,7 +1439,7 @@
 
   $ = Zepto;
 
-  $(function() {
+  window.onload(function() {
     return Game.init('build');
   });
 
@@ -1451,7 +1451,7 @@
 
     AppData.width = 320;
 
-    AppData.height = 240;
+    AppData.height = 480;
 
     AppData.scale = 2;
 

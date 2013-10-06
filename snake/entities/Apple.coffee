@@ -5,13 +5,13 @@ class Apple extends Entity
     if ni
       @move_towards(ni.x,ni.y,0.5)
     if (@hit('SnakeBody'))
-      GameController.lives -= 1
       @die()
 
     if GameController.lives < 0
       @world.reset()
 
     if @hit('Snake')
+      GameController.lives -= 1
       @die()
 
   die: ->
