@@ -9,12 +9,11 @@ class World
   pause: false
 
   constructor: ->
-    @load_level('Level')
+    @reset()
 
   # create level
   load_level: (name) ->
     level = AppData.levels[name]
-    console.log level.data
     for key,value of level.data
       @spawn(value.name,value.x,value.y)
 
@@ -27,12 +26,7 @@ class World
   # reset
   reset: ->
     @destroy_all()
-    @create_level()
-
-  # next level
-  next_level: ->
-    @destory_all()
-    @create_level()
+    @load_level('Level')
     
   # get all entities
   all_entities: ->

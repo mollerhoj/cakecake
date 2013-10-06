@@ -46,9 +46,15 @@ class Snake extends Entity
 
     @hits_self = false
 
-    if @hits('SnakeBody').some((x)->x.solid)
+    if @hits('SnakeBody').some(x->x.solid)
       @hits_self = true 
 
+    if @hit('Apple')
+      hit = @hit('Apple')
+      side = Math.floor(Math.random()*4)
+      hit.x = Math.random()*AppData.width
+      hit.y = Math.random()*AppData.height
+      GameController.score += 1
 
   outside: ->
     return @x < 0 || @x > 320 || @y < 0 || @y > 240

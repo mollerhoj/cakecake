@@ -42,21 +42,11 @@ class Entity
     dy = y - @y;
     -Math.atan2(dy,dx)*180/Math.PI
     
-
-  #Checks if this entity is touching another entity
-  hits: (other,x = 0,y = 0) ->
-    @x += x
-    @y += y
-    result = null #@collision(this,other,x,y)
-    @x -= x
-    @y -= y
-    return result
-
   nearest: (c) ->
     shortest = 9999
     nearest = null
     for e in @world.all_entities()
-      if e.name == c
+      if e.name == c and e != this
         distance = @objects_distance(this,e) 
         if distance < shortest
           nearest = e
@@ -69,6 +59,14 @@ class Entity
         if @objects_touch(this,e)
           return e
     return null
+
+  hits: (c) ->
+    res = []
+    for e in @world.all_entities()
+      if e.name == c
+        if @objects_touch(this,e)
+          res.push(e)
+    return res
 
   objects_touch: (obj1,obj2) ->
     return @objects_distance(obj1,obj2) <= obj1.r+obj2.r

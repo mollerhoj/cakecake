@@ -16,7 +16,7 @@ class SnakeBody extends Entity
     if @time > 10
       @solid = true
 
-    if @time > 60
+    if @time > 30
       @destroy()
     
 

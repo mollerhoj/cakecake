@@ -10,6 +10,11 @@ class Sprite
   z: 0
   name: null
 
+  constructor: (name='PlaceHolder',x=0,y=0) ->
+    @name = name
+    @x = x
+    @y = y
+
   draw: ->
     image = @_get_image()
     x = @x - image.width/2 + Art.offset_x

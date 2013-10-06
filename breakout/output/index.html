@@ -1,0 +1,44 @@
+<head>
+  <script type='text/javascript' src='libraries/FileSaver.js'></script>  <script type='text/javascript' src='libraries/zepto.js'></script>
+  <script type='text/javascript' src='game.js'></script>
+  <style>
+    @font-face {font-family: 'Dosis'; src: url('fonts/Dosis.ttf');}
+    @font-face {font-family: 'Londrina Outline'; src: url('fonts/Londrina Outline.ttf');}
+  </style>
+  <link href='http://fonts.googleapis.com/css?family=Gochi+Hand' rel='stylesheet' type='text/css'>
+  <title>breakout</title>
+</head>
+<body>
+  <div id='game'></div>
+  <button type='button' id='pause_toggle'>Pause</button>
+  <select id='entity_selector'>
+    <option value='Ball'>Ball</option>
+    <option value='Pad'>Pad</option>
+  </select>
+  <select id='level_selector'>
+    <option value='Level'>Level</option>
+    <option value='Level2'>Level2</option>
+    <option value='Level3'>Level3</option>
+  </select>
+  </br>
+  <button type='button' id='grid_toggle'>Grid</button>
+  <span>x:</span>
+  <input id='grid_x'type='Number' value='0'></input>
+  <span>y:</span>
+  <input id='grid_y'type='Number' value='0'></input>
+  <span>width:</span>
+  <input id='grid_width' type='Number' value='16'></input>
+  <span>height:</span>
+  <input id='grid_height' type='Number' value='16'></input>  </br>
+  <select id='save_type_selector'>
+    <option value='Flow'>Flow</option>
+    <option value='Grid'>Grid</option>
+    <option value='Vector'>Vector</option>
+  </select>
+  <button type='button' id='save_button'>Save</button>
+  <ul/>
+    <li><strong>Left mouse:</strong> Spawn entity.
+    <li><strong>Right mouse:</strong> Spawn entity.
+    <li><strong>Shift:</strong> Snap to grid.
+  <ul>
+</body>

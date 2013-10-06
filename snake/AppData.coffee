@@ -11,6 +11,7 @@ class AppData
    'SnakeBody': SnakeBody
    'SnakeBodyShadow': SnakeBodyShadow
   @sprites:
+   'Heart': 'Heart.png'
    'PlaceHolder': 'PlaceHolder.png'
    'Snake': 'Snake.png'
    'SnakeBody': 'SnakeBody.png'
