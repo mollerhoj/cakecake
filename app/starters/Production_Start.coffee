@@ -1,6 +1,4 @@
 # Start the game. This must be loaded after everything else
 
-$ = Zepto
-
-$ -> 
+window.onload = -> 
   Game.init('export')

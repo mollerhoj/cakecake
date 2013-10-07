@@ -1,6 +1,10 @@
 class Level
   @data:
+    1:
+      name: 'Apple'
+      x: 286
+      y: 118
     2:
       name: 'Snake'
-      x: 89.5
-      y: 108
+      x: 57
+      y: 121.5

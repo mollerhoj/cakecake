@@ -1,6 +1,7 @@
 # Keyboard
 # Responsible for dealing with keyboard and mouse input
 class Keyboard
+
   @_keyCodes:
     'BACKSPACE': 8
     'TAB': 9
@@ -61,6 +62,7 @@ class Keyboard
     'MOUSE_LEFT': 'MOUSE_LEFT'
     'MOUSE_MIDDLE' : 'MOUSE_MIDDLE'
     'MOUSE_RIGHT' : 'MOUSE_RIGHT'
+    'TOUCH' : 'TOUCH'
   
   @_pre_pressed: []
   @_pre_released: []
@@ -76,18 +78,28 @@ class Keyboard
   @key_pressed: (c) ->
     Keyboard._pre_pressed.push c
 
+  @touch_start: (e)->
+    Keyboard._pre_pressed.push 'TOUCH' 
+
+  @touch_end: (e) ->
+    Keyboard._pre_released.push 'TOUCH' 
+
+  @touch_move: (e)->
+    Keyboard.TOUCH_X = e.touches[0].pageX
+    Keyboard.TOUCH_Y = e.touches[0].pageY
+
   @mouse_down: (e) ->
-    switch e.button
-      when 0 then Keyboard._pre_pressed.push 'MOUSE_LEFT'
-      when 1 then Keyboard._pre_pressed.push 'MOUSE_MIDDLE'
-      when 2 then Keyboard._pre_pressed.push 'MOUSE_RIGHT'
+    switch e
+      when 1 then Keyboard._pre_pressed.push 'MOUSE_LEFT'
+      when 2 then Keyboard._pre_pressed.push 'MOUSE_MIDDLE'
+      when 3 then Keyboard._pre_pressed.push 'MOUSE_RIGHT'
     return false #to disable default drag in canvas
 
   @mouse_up: (e) ->
-    switch e.button
-      when 0 then Keyboard._pre_released.push 'MOUSE_LEFT'
-      when 1 then Keyboard._pre_released.push 'MOUSE_MIDDLE'
-      when 2 then Keyboard._pre_released.push 'MOUSE_RIGHT'
+    switch e
+      when 1 then Keyboard._pre_released.push 'MOUSE_LEFT'
+      when 2 then Keyboard._pre_released.push 'MOUSE_MIDDLE'
+      when 3 then Keyboard._pre_released.push 'MOUSE_RIGHT'
     return false #to disable default drag in canvas
 
   @mouse_move: (e) ->

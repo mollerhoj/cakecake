@@ -110,8 +110,7 @@ build_index = (mode)->
   clear_file(file)
   put_to_file(file,"
 <head>\n
-  <script type='text/javascript' src='libraries/FileSaver.js'></script>
-  <script type='text/javascript' src='libraries/zepto.js'></script>\n
+#{write_dev_libraries(mode)}
   <script type='text/javascript' src='game.js'></script>\n
   <style>\n
 #{write_fonts()}
@@ -120,10 +119,15 @@ build_index = (mode)->
   <title>#{app_name()}</title>\n
 </head>\n
 <body>\n
-  <div id='game'></div>\n
 #{write_development_tools(mode)}\n
 </body>")
   return false
+
+write_dev_libraries = (mode) ->
+  if mode=='build'
+    return "<script type='text/javascript' src='#{espresso_path}dev_libraries/FileSaver.js'></script>"
+  else
+    return ""
 
 write_fonts = ->
   str = ''
@@ -201,6 +205,9 @@ compile_game = ->
     fs.unlink 'output/game.coffee', (err) ->
       throw err if err
 
+zip_game = ->
+  exec "zip -r -X #{app_name()}.zip . -x \".*\""
+
 #Build all
 build_all = ->
   build_resources()
@@ -218,6 +225,10 @@ export_all = ->
   compile_game()
 
 #TASKS
+task 'zip', 'Zip output', ->
+  zip_game()
+  console.log 'Done.'
+
 task 'export', 'Export single application file from source files', ->
   export_all()
   console.log 'Done.'

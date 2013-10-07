@@ -11,15 +11,13 @@ class GameController extends Entity
       @life_sprites[i].y = 240-16
     @text = new Text('10',10,10)
     @world.spawn('Snake',100,100)
-    @world.spawn('Apple',100,100)
+    @world.spawn('Apple',200,200)
 
   draw: ->
-    @x = Keyboard.MOUSE_X
-    @y = Keyboard.MOUSE_Y
     @text.string = GameController.score
     @text.draw()
     for i in [0..GameController.lives] by 1
       @life_sprites[i].x = 16+16*i
-      @life_sprites[i].draw()
+      #@life_sprites[i].draw()
 
 

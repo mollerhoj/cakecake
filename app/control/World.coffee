@@ -44,7 +44,8 @@ class World
 
   # Spawn new
   spawn: (name,x = 0,y = 0) ->
-    entity = new AppData.entities[name]
+    cl = AppData.entities[name]
+    entity = new cl 
     entity.world = this
     entity.sx = x
     entity.sy = y

@@ -16,7 +16,7 @@ class SnakeBody extends Entity
     if @time > 10
       @solid = true
 
-    if @time > 30
+    if @time > 10+4*GameController.score
       @destroy()
     
 

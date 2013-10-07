@@ -47,7 +47,7 @@ class Game
     canvas = document.createElement("canvas")
     canvas.width = AppData.width * AppData.scale
     canvas.height = AppData.height * AppData.scale
-    $("#game").append(canvas)
+    document.body.appendChild canvas
     context = canvas.getContext("2d")
     context.textBaseline = 'top'
     context.imageSmoothingEnabled = false # Spec
@@ -56,14 +56,23 @@ class Game
     return context
 
   @setup_keyboard: ->
-    $("body").keydown (e) =>
-      Keyboard.key_pressed(e.keyCode)
-    $("body").keyup (e) =>
-      Keyboard.key_released(e.keyCode)
-    $("#game").mousemove(Keyboard.mouse_move)
-    $("#game").mousedown(Keyboard.mouse_down)
-    $("#game").mouseup(Keyboard.mouse_up)
-    $("#game").bind "contextmenu", (e) -> return false # remove contextmenu
+    canvas = document.getElementsByTagName("canvas")[0]
+    document.body.onkeydown = =>
+      Keyboard.key_pressed(event.keyCode)
+    document.body.onkeyup = =>
+      Keyboard.key_released(event.keyCode)
+    canvas.onmousemove = =>
+      Keyboard.mouse_move(event)
+    canvas.onmousedown = =>
+      Keyboard.mouse_down(event.which)
+    canvas.onmouseup = =>
+      Keyboard.mouse_up(event.which)
+    canvas.oncontextmenu = => return false #remove right-click menu
+    canvas.addEventListener "touchstart", Keyboard.touch_start, false
+    canvas.addEventListener "touchend", Keyboard.touch_end, false
+    canvas.addEventListener "touchcancel", Keyboard.touch_end , false
+    canvas.addEventListener "touchleave", Keyboard.touch_end, false
+    canvas.addEventListener "touchmove", Keyboard.touch_move, false
 
   @run: =>
     for world in Game.worlds

@@ -8,6 +8,8 @@ class Snake extends Entity
     r: 10000
 
   step: ->
+    if Keyboard.press('TOUCH')
+      @dir = (@dir+90) % 360
 
     if !@hits_self
       if Keyboard.hold('RIGHT') 
@@ -44,11 +46,8 @@ class Snake extends Entity
     if @y > AppData.height
       @y = 0
 
-    @hits_self = false
-
     if @hits('SnakeBody').some((x)->x.solid)
-      @hits_self = true 
-
+      @world.reset()
 
   outside: ->
     return @x < 0 || @x > AppData.width || @y < 0 || @y > AppData.height
