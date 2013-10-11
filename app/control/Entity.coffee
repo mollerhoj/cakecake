@@ -68,8 +68,20 @@ class Entity
           res.push(e)
     return res
 
-  objects_touch: (obj1,obj2) ->
+  objects_touch_circle: ->
     return @objects_distance(obj1,obj2) <= obj1.r+obj2.r
+
+  objects_touch: (obj1,obj2) ->
+    l1 = obj1.x-obj1.w/2
+    r1 = obj1.x+obj1.w/2
+    l2 = obj2.x-obj2.w/2
+    r2 = obj2.x+obj2.w/2
+
+    u1 = obj1.y-obj1.h/2
+    d1 = obj1.y+obj1.h/2
+    u2 = obj2.y-obj2.h/2
+    d2 = obj2.y+obj2.h/2
+    return r1 > l2 && l1 < r2 && d1 > u2 && u1 < d2
 
   objects_distance: (obj1,obj2) ->
     return @points_distance(obj1.x,obj1.y,obj2.x,obj2.y)

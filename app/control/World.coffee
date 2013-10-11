@@ -67,13 +67,18 @@ class World
     entity.init()
     return entity
 
-  # Find the number of instances of a class
-  number_of: (c) ->
-    return @objectsOfClass(c).length
+  objects_of_class: (c) ->
+    res = []
+    for entity in @_entities
+      if entity.name == c then res.push(entity)
+    return res
+      
 
-  # Find if there exists an instance of a class
+  number_of: (c) ->
+    return @objects_of_class(c).length
+
   exists: (c) ->
-    return @number_of c > 0
+    return @number_of(c) > 0
 
   # Draw all the _entities
   draw: ->
@@ -87,9 +92,7 @@ class World
       return if Math.sign(a.z-b.z)==0 then Math.sign(a.y-b.y) else Math.sign(a.z-b.z)
     
     #Draw all entities
-    for entity in @_entities when entity.visible is true
-      if Art.get_alpha() != 1
-        Art.alpha 1
+    for entity in @_entities
       entity.draw()
 
   # Step for all _entities

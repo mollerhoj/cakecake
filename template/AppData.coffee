@@ -5,17 +5,14 @@ class AppData
   @scale = 2
   @grid_on = false
   @entities:
-   'Apple': Apple
+   'Board': Board
    'GameController': GameController
-   'Snake': Snake
-   'SnakeBody': SnakeBody
-   'SnakeBodyShadow': SnakeBodyShadow
   @sprites:
+   'Ball': 'Ball.png'
    'Heart': 'Heart.png'
+   'Pad1': 'Pad1.png'
+   'Pad2': 'Pad2.png'
    'PlaceHolder': 'PlaceHolder.png'
-   'Snake': 'Snake.png'
-   'SnakeBody': 'SnakeBody.png'
-   'SnakeBodyShadow': 'SnakeBodyShadow.png'
   @levels:
    'Level': Level
    'Level2': Level2

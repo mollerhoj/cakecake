@@ -7,6 +7,7 @@ class Text
   alpha: 1
   rotation: 0
   index: 1
+  align: 'center'
   z: 0
   name: null
 
@@ -20,12 +21,11 @@ class Text
     @x = x
     @y = y
 
-  draw: ->
+  draw: (string='',x=0,y=0) ->
     @_update()
-
     if @rotation != 0
       Game.context.save()
-      Game.context.translate(@x+@get_width()/2,@y+@get_height()/2)
+      Game.context.translate(@x+get_width()/2,@y+@get_height()/2)
       Game.context.rotate(Math.PI/180*@rotation)
       Game.context.fillText(@string,-@get_width()/2,-@get_height()/2)
       Game.context.restore()
@@ -41,4 +41,5 @@ class Text
 
   _update: ->
     Game.context.font = @font_style + " " + @font_size + " " + @font
+    Game.context.textAlign=@align
 

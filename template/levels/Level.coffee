@@ -1,10 +1,10 @@
 class Level
   @data:
     1:
-      name: 'Apple'
-      x: 286
-      y: 118
+      name: 'Board'
+      x: 50.5
+      y: 35.5
     2:
-      name: 'Snake'
-      x: 57
-      y: 121.5
+      name: 'GameController'
+      x: 38
+      y: 47
