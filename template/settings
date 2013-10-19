@@ -3,3 +3,5 @@ settings_height = 240
 settings_scale = 2
 settings_background = 'Background'
 settings_grid_on = false
+settings_physics = true
+settings_physics_pixel_per_meter = 16

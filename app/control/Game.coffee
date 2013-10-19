@@ -1,3 +1,4 @@
+using_physics(Box2D, "b2.+")
 # ## Game
 # The game class handles top level game loop and initialisation.
 class Game
@@ -8,6 +9,7 @@ class Game
   @pause = false
   @editor = null
   @mode = ""
+  @physics_world = null
 
   @add_world: ->
     Game.worlds.push(new World)

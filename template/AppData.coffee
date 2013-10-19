@@ -4,8 +4,11 @@ class AppData
   @height = 240
   @scale = 2
   @grid_on = false
+  @physics = true
+  @physics_pixel_per_meter = 16
   @entities:
    'Block': Block
+   'dbtest': dbtest
    'Explosion': Explosion
    'Fireball': Fireball
    'GameController': GameController

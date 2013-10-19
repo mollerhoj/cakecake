@@ -7,9 +7,11 @@ class World
   x: 0
   y: 0
   pause: false
+  physics: null
 
   constructor: ->
-    @reset()
+    if AppData.physics
+      @physics = new Physics
 
   # create level
   load_level: (name) ->
@@ -84,11 +86,14 @@ class World
 
   # Draw all the _entities
   draw: ->
+
     #Draw background
     Art.color '#EFF8FB'
     Art.rectangleC 0,0,AppData.width * AppData.scale / Game.zoom_level,AppData.height * AppData.scale / Game.zoom_level,true
     Art.color '#000000'
 
+    if @physics
+      @physics.draw()
     #Sort for z values. not tested.
     @_entities.sort (a,b) ->
       return if Math.sign(a.z-b.z)==0 then Math.sign(a.y-b.y) else Math.sign(a.z-b.z)
@@ -99,6 +104,8 @@ class World
 
   # Step for all _entities
   step:   ->
+    @physics.world.Step(1/120, 3, 2);
+
     Keyboard.step()
    
     if @pause == false

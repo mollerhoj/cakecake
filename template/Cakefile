@@ -82,6 +82,8 @@ class AppData\n
   @height = #{settings_height}\n
   @scale = #{settings_scale}\n
   @grid_on = #{settings_grid_on}\n
+  @physics = #{settings_physics}\n
+  @physics_pixel_per_meter = #{settings_physics_pixel_per_meter}\n
   @entities:\n
 #{write_appdata_res('entities')}
   @sprites:\n
@@ -124,10 +126,12 @@ build_index = (mode)->
   return false
 
 write_dev_libraries = (mode) ->
+  str = ''
+  for lib in harvest('libraries')
+    str+="<script type='text/javascript' src='libraries/#{lib}'></script>\n"
   if mode=='build'
-    return "<script type='text/javascript' src='#{espresso_path}dev_libraries/FileSaver.js'></script>"
-  else
-    return ""
+    str+="<script type='text/javascript' src='#{espresso_path}dev_libraries/FileSaver.js'></script>\n"
+  return str
 
 write_fonts = ->
   str = ''
