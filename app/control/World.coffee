@@ -45,6 +45,8 @@ class World
   # Spawn new
   spawn: (name,x = 0,y = 0) ->
     cl = AppData.entities[name]
+    if not cl
+      console.log "Error: #{name} not found"
     entity = new cl 
     entity.world = this
     entity.sx = x
