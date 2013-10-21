@@ -1532,7 +1532,7 @@
 
     Pendulum.prototype.body = null;
 
-    Pendulum.prototype.speed = 10;
+    Pendulum.prototype.speed = 2;
 
     Pendulum.prototype.jump_power = 800;
 
@@ -1637,12 +1637,13 @@
       var hit, i, knot, n, px, py, vec, xx, yy, _i, _ref, _results;
       Pendulum.__super__.draw.call(this);
       if (this.bullet) {
+        this.rope[0] = new b2Vec2(this.bullet.x, this.bullet.y);
+        this.rope_length = 1;
         if (hit = this.ray_shoot(this.bullet.x, this.bullet.y)) {
           this.bullet.destroy();
           this.bullet = null;
           this.dis_joint(hit.x, hit.y);
           this.rope[0] = new b2Vec2(hit.x, hit.y);
-          this.rope_length = 1;
         }
       }
       if (this.joint) {
@@ -2066,6 +2067,7 @@
     AppData.sprites = {
       'Block': 'Block.png',
       'Block16': 'Block16.png',
+      'Bullet': 'Bullet.png',
       'Explosion': 'Explosion.png',
       'Explosion2': 'Explosion2.png',
       'Explosion3': 'Explosion3.png',
@@ -2089,6 +2091,7 @@
       'Hero7': 'Hero7.png',
       'Hero8': 'Hero8.png',
       'Hero9': 'Hero9.png',
+      'Pendulum': 'Pendulum.png',
       'PlaceHolder': 'PlaceHolder.png'
     };
 

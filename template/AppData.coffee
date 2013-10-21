@@ -18,6 +18,7 @@ class AppData
   @sprites:
    'Block': 'Block.png'
    'Block16': 'Block16.png'
+   'Bullet': 'Bullet.png'
    'Explosion': 'Explosion.png'
    'Explosion2': 'Explosion2.png'
    'Explosion3': 'Explosion3.png'
@@ -41,6 +42,7 @@ class AppData
    'Hero7': 'Hero7.png'
    'Hero8': 'Hero8.png'
    'Hero9': 'Hero9.png'
+   'Pendulum': 'Pendulum.png'
    'PlaceHolder': 'PlaceHolder.png'
   @levels:
    'Level': Level

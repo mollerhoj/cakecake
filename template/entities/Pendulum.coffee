@@ -4,7 +4,7 @@ class Pendulum extends Entity
     friction: 0.25
   body: null
 
-  speed: 10
+  speed: 2
   jump_power: 800
   crawl_speed: 0.1
   joint_last_angle: 90
@@ -87,12 +87,13 @@ class Pendulum extends Entity
   draw: ->
     super()
     if @bullet
+      @rope[0] = new b2Vec2(@bullet.x,@bullet.y)
+      @rope_length = 1
       if hit = @ray_shoot(@bullet.x,@bullet.y)
         @bullet.destroy()
         @bullet = null
         @dis_joint(hit.x,hit.y)
         @rope[0] = new b2Vec2(hit.x,hit.y)
-        @rope_length = 1
 
     if @joint
       # Remove knot
