@@ -68,6 +68,9 @@ class Entity
           res.push(e)
     return res
 
+  spawn: (cl) ->
+    @world.spawn(cl,@x,@y)
+
   objects_touch_circle: ->
     return @objects_distance(obj1,obj2) <= obj1.r+obj2.r
 

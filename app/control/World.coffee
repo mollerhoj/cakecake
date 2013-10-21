@@ -46,17 +46,22 @@ class World
 
   # Spawn new
   spawn: (name,x = 0,y = 0) ->
+    #Load entity
     cl = AppData.entities[name]
     if not cl
       console.log "Error: #{name} not found"
+
+    #Set entity values
     entity = new cl 
     entity.world = this
     entity.sx = x
     entity.sy = y
 
+    #set name
     if entity.name == null
       entity.name = name
-    
+
+    #set sprite + depending
     if entity.sprite == null
       entity.sprite = new Sprite
       if !Game.images[name] 
@@ -65,6 +70,11 @@ class World
       entity.w = Game.images[name].width
       entity.h = Game.images[name].height
       entity.r = (entity.w+entity.h)/4
+
+    #set physics
+    if AppData.physics
+      if entity.physics
+        entity.body = @physics.build_dynamic_box(x,y,entity.w,entity.h)
 
     @_entities.push (entity)
     entity.reset()
@@ -94,6 +104,7 @@ class World
 
     if @physics
       @physics.draw()
+
     #Sort for z values. not tested.
     @_entities.sort (a,b) ->
       return if Math.sign(a.z-b.z)==0 then Math.sign(a.y-b.y) else Math.sign(a.z-b.z)
@@ -104,11 +115,11 @@ class World
 
   # Step for all _entities
   step:   ->
-    @physics.world.Step(1/120, 3, 2);
 
     Keyboard.step()
    
     if @pause == false
+      @physics.world.Step(1/120, 3, 2);
       for entity in @_entities
         if typeof entity.step is "function"
           entity.step()

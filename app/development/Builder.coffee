@@ -41,6 +41,7 @@ class Builder
       @grid = Game.editor.grid
 
     if not @active then return
+    if !Game.pause then return
     
     # Create objects
     if Keyboard.press('MOUSE_LEFT')
@@ -48,8 +49,6 @@ class Builder
 
     # Hold objects
     if @hold
-      if !Game.pause
-        @editor.set_pause(true)
       @hold.x = Keyboard.MOUSE_X
       @hold.y = Keyboard.MOUSE_Y
       if Keyboard.hold('SHIFT') and @grid
@@ -64,7 +63,6 @@ class Builder
 
     # Destroy objects
     if Keyboard.hold('MOUSE_RIGHT')
-      @editor.set_pause(true)
       temp_all_entities = @world.all_entities().slice(0)
       for e in temp_all_entities when e.mouse_hits()
         e.destroy()

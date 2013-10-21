@@ -117,12 +117,13 @@ build_index = (mode)->
   <style>\n
 #{write_fonts()}
   </style>\n
-  <link href='http://fonts.googleapis.com/css?family=Gochi+Hand' rel='stylesheet' type='text/css'>\n
   <title>#{app_name()}</title>\n
 </head>\n
 <body>\n
 #{write_development_tools(mode)}\n
 </body>")
+    # Could add:
+    #<link href='http://fonts.googleapis.com/css?family=Gochi+Hand' rel='stylesheet' type='text/css'>\n
   return false
 
 write_dev_libraries = (mode) ->
@@ -168,6 +169,14 @@ write_development_tools = (mode) ->
     <option value='Vector'>Vector</option>\n
   </select>\n
   <button type='button' id='save_button'>Save</button>\n
+  </br>\n
+  <select id='debug_draw_selector'>\n
+    <option value='e_shapeBit'>Shapes</option>\n
+    <option value='e_jointBit'>Joints</option>\n
+    <option value='e_aabbBit'>AABB</option>\n
+    <option value='e_pairBit'>Pairs</option>\n
+    <option value='e_centerOfMassBit'>Center of mass</option>\n
+  </select>\n
   <ul/>\n
     <li><strong>Left mouse:</strong> Spawn entity.\n
     <li><strong>Right mouse:</strong> Spawn entity.\n

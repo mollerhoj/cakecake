@@ -44,6 +44,9 @@ class Editor
     @pause_button.addEventListener "click", @toggle_pause, false
     @pause_button.addEventListener "click", @entity_change, false
 
+    @debug_draw_selector = document.getElementById("debug_draw_selector")
+    @debug_draw_selector.addEventListener "change", @debug_draw_change, false
+
     @grid_x= document.getElementById("grid_x")
     @grid_y= document.getElementById("grid_y")
     @grid_width= document.getElementById("grid_width")
@@ -67,6 +70,9 @@ class Editor
 
   save_type_change: =>
     @builder.save_type = @save_type_selector.value
+
+  debug_draw_change: =>
+    @world.physics.set_debug_draw(@debug_draw_selector.value)
 
   save: =>
     level = @level_selector.value

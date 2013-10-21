@@ -8,11 +8,13 @@ class AppData
   @physics_pixel_per_meter = 16
   @entities:
    'Block': Block
-   'dbtest': dbtest
+   'Bullet': Bullet
+   'Domino': Domino
    'Explosion': Explosion
    'Fireball': Fireball
    'GameController': GameController
    'Hero': Hero
+   'Pendulum': Pendulum
   @sprites:
    'Block': 'Block.png'
    'Block16': 'Block16.png'

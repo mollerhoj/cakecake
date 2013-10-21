@@ -1,25 +1,24 @@
 <head>
-<script type='text/javascript' src='libraries/box2d.js'></script>
-<script type='text/javascript' src='libraries/embox2d-helpers.js'></script>
-<script type='text/javascript' src='libraries/embox2d-html5canvas-testbed.js'></script>
+<script type='text/javascript' src='libraries/Box2dWeb-2.1.a.3.js'></script>
 <script type='text/javascript' src='/Users/mollerhoj3/work/coffee/espresso/dev_libraries/FileSaver.js'></script>
   <script type='text/javascript' src='game.js'></script>
   <style>
     @font-face {font-family: 'Dosis'; src: url('fonts/Dosis.ttf');}
     @font-face {font-family: 'Londrina Outline'; src: url('fonts/Londrina Outline.ttf');}
   </style>
-  <link href='http://fonts.googleapis.com/css?family=Gochi+Hand' rel='stylesheet' type='text/css'>
   <title>template</title>
 </head>
 <body>
   <button type='button' id='pause_toggle'>Pause</button>
   <select id='entity_selector'>
     <option value='Block'>Block</option>
-    <option value='dbtest'>dbtest</option>
+    <option value='Bullet'>Bullet</option>
+    <option value='Domino'>Domino</option>
     <option value='Explosion'>Explosion</option>
     <option value='Fireball'>Fireball</option>
     <option value='GameController'>GameController</option>
     <option value='Hero'>Hero</option>
+    <option value='Pendulum'>Pendulum</option>
   </select>
   <select id='level_selector'>
     <option value='Level'>Level</option>
@@ -41,6 +40,14 @@
     <option value='Vector'>Vector</option>
   </select>
   <button type='button' id='save_button'>Save</button>
+  </br>
+  <select id='debug_draw_selector'>
+    <option value='e_shapeBit'>Shapes</option>
+    <option value='e_jointBit'>Joints</option>
+    <option value='e_aabbBit'>AABB</option>
+    <option value='e_pairBit'>Pairs</option>
+    <option value='e_centerOfMassBit'>Center of mass</option>
+  </select>
   <ul/>
     <li><strong>Left mouse:</strong> Spawn entity.
     <li><strong>Right mouse:</strong> Spawn entity.
