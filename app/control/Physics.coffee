@@ -1,3 +1,4 @@
+
 b2ControllerEdge = Box2D.Dynamics.Controllers.b2ControllerEdge
 b2Mat22 = Box2D.Common.Math.b2Mat22
 b2Mat33 = Box2D.Common.Math.b2Mat33
@@ -98,6 +99,7 @@ b2RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef
 b2WeldJoint = Box2D.Dynamics.Joints.b2WeldJoint
 b2WeldJointDef = Box2D.Dynamics.Joints.b2WeldJointDef
 
+#As documentation
 console.log Box2D
 
 #Vector from this to that
@@ -123,7 +125,14 @@ Box2D.Common.Math.b2Vec2::closer_to = (that,n) ->
   t1.Multiply(n)
   t1.Add(this)
   return t1
-  
+
+#Angle (in radians)
+Box2D.Common.Math.b2Vec2::angle = ->
+  return Math.atan2(@y,@x)
+
+#Untested:
+Box2D.Common.Math.b2Vec2::angle_between = (vec) ->
+  return self.dot(vec) / (vec.Length * self.Length)
 
 Box2D.Common.Math.b2Vec2::dot = (vec) ->
   console.log "calculate dot product"
@@ -134,23 +143,12 @@ Box2D.Common.Math.b2Vec2::proj = (vec) ->
 Box2D.Common.Math.b2Vec2::cross = (vec) ->
   console.log "calculate cross project"
 
-Box2D.Common.Math.b2Vec2::angle = ->
-  return Math.atan2(@y,@x)
-
-Box2D.Common.Math.b2Vec2::angle_between = (vec) ->
-  console.log "calculate angle between"
-  return self.dot(vec) / (vec.Length * self.Length)
-
 class Physics
   world: null
   fix_def: null
   solid: null
+  visible: false
   PTM: 16
-
-  # body definition: Defines a body
-  # body: moving objects
-  # fixture: part of body
-  # shape: trigometric shape
 
   constructor: ->
     @fix_def = new b2FixtureDef
@@ -163,8 +161,25 @@ class Physics
     solid_def = new b2BodyDef()
     solid_def.position.Set(0,0)
     @solid = @world.CreateBody(solid_def)
+    @solid.SetUserData('my_SOLID')
     @build_edges()
-    @build_boxes()
+    @setup_contact_listener()
+
+  setup_contact_listener: ->
+    contact_listener = new b2ContactListener
+    contact_listener.BeginContact = (contact) =>
+      a = contact.GetFixtureA().GetBody().GetUserData()
+      b = contact.GetFixtureB().GetBody().GetUserData()
+      if a instanceof Entity and b instanceof Entity
+        a.hit_hash[b] = a
+        b.hit_hash[a] = b
+    contact_listener.EndContact = (contact) =>
+      a = contact.GetFixtureA().GetBody().GetUserData()
+      b = contact.GetFixtureB().GetBody().GetUserData()
+      if a instanceof Entity and b instanceof Entity
+        delete a.hit_hash[b]
+        delete b.hit_hash[a]
+    @world.SetContactListener(contact_listener)
 
   create_world: ->
     @world = new b2World(new b2Vec2(0.0, 60.0),true)
@@ -184,12 +199,6 @@ class Physics
     @build_solid_line(0,0,0,AppData.height)
     @build_solid_line(AppData.width,0,AppData.width,AppData.height)
 
-  build_boxes: ->
-    @build_solid_box(32,32,32,32,45)
-    @build_solid_box(64,128,16,64,0)
-    @build_solid_box(232,62,132,8,10)
-    @build_solid_circle(200,90,22)
-
   build_solid_line: (x1,y1,x2,y2) ->
     @fix_def.shape = new b2PolygonShape
     @fix_def.shape.SetAsEdge(new b2Vec2(x1/@PTM, y1/@PTM), new b2Vec2(x2/@PTM, y2/@PTM))
@@ -208,26 +217,38 @@ class Physics
     @solid.CreateFixture(@fix_def);
 
   build_dynamic: (x,y,w,h,physics) ->
-    bd = new b2BodyDef()
-    bd.type = b2Body.b2_dynamicBody
-    bd.position.Set(x/@PTM, y/@PTM)
+
     if physics.shape == 'circle'
       shape = new b2CircleShape()
       shape.SetRadius Math.max(w,h)/@PTM/2
     else
       shape = new b2PolygonShape()
       shape.SetAsBox w/@PTM/2, h/@PTM/2
+
     fd = new b2FixtureDef()
     fd.shape = shape
     fd.density = physics.density
     fd.friction = physics.friction
     fd.restitution = physics.restitution
+    bd = new b2BodyDef()
+    bd.position.Set(x/@PTM, y/@PTM)
+
+    if physics.type == 'dynamic'
+      bd.type = b2Body.b2_dynamicBody
+    else
+      bd.type = b2Body.b2_staticBody
+      fd.isSensor = true
+
+    if physics.solid == true
+      fd.isSensor = false
+
     body = @world.CreateBody(bd)
     body.CreateFixture fd
     return body
 
   draw: (x,y) ->
-    Game.context.save()
-    Game.context.translate(x,y)
-    @world.DrawDebugData()
-    Game.context.restore()
+    if @visible
+      Game.context.save()
+      Game.context.translate(x,y)
+      @world.DrawDebugData()
+      Game.context.restore()

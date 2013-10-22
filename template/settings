@@ -1,7 +1,8 @@
-settings_width = 360
-settings_height = 240
-settings_scale = 2
+settings_width = 640
+settings_height = 480
+settings_scale = 1
 settings_background = 'Background'
 settings_grid_on = false
 settings_physics = true
 settings_physics_pixel_per_meter = 16
+settings_start_level = 'Menu'

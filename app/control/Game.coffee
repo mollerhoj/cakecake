@@ -10,7 +10,9 @@ class Game
   @mode = ""
 
   @add_world: ->
-    Game.worlds.push(new World)
+    w = new World
+    Game.worlds.push(w)
+    return w
 
   @init:(mode) ->
     @mode = mode
@@ -29,7 +31,9 @@ class Game
     
   @start: =>
     #Create a world
-    Game.add_world()
+    w = Game.add_world()
+
+    w.load_level(AppData.start_level)
 
     #Create editor
     if @mode=="build"

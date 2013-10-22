@@ -20,6 +20,7 @@ class Entity
   world: null
   art: null
   z: 0
+  hit_hash: {}
 
   draw: ->
     if @sprite
@@ -31,6 +32,12 @@ class Entity
     return null
 
   step: ->
+    if @physics && @body
+      p = @body.GetPosition()
+      @x=p.x*16
+      @y=p.y*16
+      @sprite.rotation=-@body.GetAngle()/(Math.PI*2)*360
+
     return null
 
   move_towards: (x,y,speed) ->
@@ -53,6 +60,13 @@ class Entity
           nearest = e
           shortest = distance
     return nearest
+
+  touch: (c) ->
+    for key, val of @hit_hash
+      if val.name == c
+        return val
+    return null
+
 
   hit: (c) ->
     for e in @world.all_entities()
@@ -94,6 +108,8 @@ class Entity
     return Math.sqrt(Math.pow(x1-x2,2)+Math.pow(y1-y2,2))
 
   destroy: ->
+    if @body
+      @world.physics.world.DestroyBody(@body)
     @world.destroy this
 
   reset: ->

@@ -9,11 +9,15 @@ class Sprite
   index: 1
   z: 0
   name: null
+  w: undefined
+  h: undefined
 
   constructor: (name='PlaceHolder',x=0,y=0) ->
     @name = name
     @x = x
     @y = y
+    @w = Game.images[name].width
+    @h = Game.images[name].height
 
   draw: ->
     image = @_get_image()
@@ -28,7 +32,6 @@ class Sprite
       Game.context.rotate(Math.PI/180*(0-@rotation))
       Game.context.drawImage(image,0,0,image.width,image.height,-image.width/2,-image.height/2,image.width,image.height)
       Game.context.restore()
-
 
   _get_image: ->
     if @index != 1

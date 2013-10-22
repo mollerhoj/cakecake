@@ -84,6 +84,7 @@ class AppData\n
   @grid_on = #{settings_grid_on}\n
   @physics = #{settings_physics}\n
   @physics_pixel_per_meter = #{settings_physics_pixel_per_meter}\n
+  @start_level = '#{settings_start_level}'\n
   @entities:\n
 #{write_appdata_res('entities')}
   @sprites:\n
@@ -170,13 +171,7 @@ write_development_tools = (mode) ->
   </select>\n
   <button type='button' id='save_button'>Save</button>\n
   </br>\n
-  <select id='debug_draw_selector'>\n
-    <option value='e_shapeBit'>Shapes</option>\n
-    <option value='e_jointBit'>Joints</option>\n
-    <option value='e_aabbBit'>AABB</option>\n
-    <option value='e_pairBit'>Pairs</option>\n
-    <option value='e_centerOfMassBit'>Center of mass</option>\n
-  </select>\n
+  <input type='checkbox' id='debug_draw_checkbox' value='draw' >Draw physics<br>
   <ul/>\n
     <li><strong>Left mouse:</strong> Spawn entity.\n
     <li><strong>Right mouse:</strong> Spawn entity.\n

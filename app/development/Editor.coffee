@@ -18,6 +18,7 @@ class Editor
     @world = world
     @builder = new Builder(this)
     @grid = new Grid
+    @grid.art = @world.art
 
     # el = document.getElementsByTagName("canvas")[0]
     # el.addEventListener "touchstart", Keyboard.touch_start, false
@@ -44,8 +45,8 @@ class Editor
     @pause_button.addEventListener "click", @toggle_pause, false
     @pause_button.addEventListener "click", @entity_change, false
 
-    @debug_draw_selector = document.getElementById("debug_draw_selector")
-    @debug_draw_selector.addEventListener "change", @debug_draw_change, false
+    @debug_draw_checkbox = document.getElementById("debug_draw_checkbox")
+    @debug_draw_checkbox.addEventListener "change", @debug_draw_change, false
 
     @grid_x= document.getElementById("grid_x")
     @grid_y= document.getElementById("grid_y")
@@ -64,7 +65,6 @@ class Editor
 
   level_change: =>
     @level = @level_selector.value
-    console.log @level
     @world.destroy_all()
     @world.load_level(@level)
 
@@ -72,7 +72,7 @@ class Editor
     @builder.save_type = @save_type_selector.value
 
   debug_draw_change: =>
-    @world.physics.set_debug_draw(@debug_draw_selector.value)
+    @world.physics.visible = @debug_draw_checkbox.checked
 
   save: =>
     level = @level_selector.value
@@ -90,7 +90,6 @@ class Editor
     @grid.height = parseInt @grid_height.value
 
   toggle_grid: =>
-    console.log 'e'
     if @grid.visible
       @grid.visible = false
     else

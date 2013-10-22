@@ -9,48 +9,47 @@ class World
   pause: false
   physics: null
   art: null
+  background: null
+  current_level: ''
 
   constructor: ->
+    @background = new Sprite('Background',AppData.width/2,AppData.height/2)
     if AppData.physics
       @physics = new Physics
     @art = new Art(this)
 
-  # create level
-  load_level: (name) ->
+  change_level: (name) ->
+    @destroy_all()
+    @load_level(name)
+
+  load_level: (name,index=1) ->
+    if index != 1
+      name = name+index
+    @current_level = name
     level = AppData.levels[name]
     for key,value of level.data
       @spawn(value.name,value.x,value.y)
 
-  # destroy all
-  destroy_all: ->
-    temp = @_entities.slice(0)
-    for e in temp
-      @_entities.remove e
-
   # reset
   reset: ->
     @destroy_all()
-    @load_level('Level')
-    
-  # get all entities
-  all_entities: ->
-    return @_entities
+    @load_level(current_level)
 
-  # Set entity to be destroied
   destroy: (entity) ->
     @_entities_to_destroy.push entity
 
-  # Remove all entities that are set to be destroid
-  _remove_destroyed: ->
-    for e in @_entities_to_destroy
-      @_entities.remove e
-    @_entities_to_destroy = []
+  destroy_all: ->
+    for e in @_entities
+      e.destroy()
+    
+  all_entities: ->
+    return @_entities
 
   # Spawn new
   spawn: (name,x = 0,y = 0) ->
     #Load entity
     cl = AppData.entities[name]
-    if not cl
+    if not cl or cl == undefined
       console.log "Error: #{name} not found"
 
     #Set entity values
@@ -63,14 +62,18 @@ class World
     if entity.name == null
       entity.name = name
 
-    #set sprite + depending
+    #set sprite
     if entity.sprite == null
-      entity.sprite = new Sprite
-      if !Game.images[name] 
-        name = 'PlaceHolder' 
-      entity.sprite.name = name
-      entity.w = Game.images[name].width
-      entity.h = Game.images[name].height
+      if !Game.images[name]
+        name = 'PlaceHolder'
+      entity.sprite = new Sprite(name)
+
+    #set size
+    if entity.w == undefined
+      entity.w = entity.sprite.w
+    if entity.h == undefined
+      entity.h = entity.sprite.h
+    if entity.r == undefined
       entity.r = (entity.w+entity.h)/4
 
     #set art
@@ -80,6 +83,7 @@ class World
     if AppData.physics
       if entity.physics
         entity.body = @physics.build_dynamic(x,y,entity.w,entity.h,entity.physics)
+        entity.body.SetUserData(entity)
 
     @_entities.push (entity)
     entity.reset()
@@ -92,7 +96,6 @@ class World
       if entity.name == c then res.push(entity)
     return res
       
-
   number_of: (c) ->
     return @objects_of_class(c).length
 
@@ -101,11 +104,12 @@ class World
 
   # Draw all the _entities
   draw: ->
-
     #Draw background
     @art.color '#EFF8FB'
     @art.rectangleC 0,0,AppData.width * AppData.scale / Game.zoom_level,AppData.height * AppData.scale / Game.zoom_level,true
     @art.color '#000000'
+
+    @background.draw()
 
     if @physics
       @physics.draw(@x,@y)
@@ -120,7 +124,6 @@ class World
 
   # Step for all _entities
   step:   ->
-
     Keyboard.step()
    
     if @pause == false
@@ -130,3 +133,10 @@ class World
           entity.step()
 
     @_remove_destroyed()
+
+  #private
+
+  _remove_destroyed: ->
+    for e in @_entities_to_destroy
+      @_entities.remove e
+    @_entities_to_destroy = []

@@ -1,18 +1,20 @@
 class Pendulum extends Entity
   # TODO:
-  # Cleanup
-  # Friction in swing
-  # Force left/right
+  # /Friction in swing
+  # /Force left/right
   # crawl control
   # Sensors: Coins
-  # Point move to vertex/radius?
+  # /Point move to vertex/radius?
   physics:
     shape: 'circle'
     friction: 0.25
     density: 35
     restitution: 0.95
+    type: 'dynamic'
   body: null
 
+  w: 8
+  h: 8
   speed: 2
   jump_power: 800
   crawl_speed: 0.1
@@ -48,11 +50,12 @@ class Pendulum extends Entity
     while b
       f = b.GetFixtureList()
       while f
-        if f.RayCast(output,input,b.GetTransform())
-          p = input.p1.to(input.p2)
-          x2 = @x+p.x*16*output.fraction
-          y2 = @y+p.y*16*output.fraction
-          return new b2Vec2(x2,y2)
+        if f.GetType()
+          if f.RayCast(output,input,b.GetTransform())
+            p = input.p1.to(input.p2)
+            x2 = @x+p.x*16*output.fraction
+            y2 = @y+p.y*16*output.fraction
+            return new b2Vec2(x2,y2)
         f = f.GetNext()
       b = b.GetNext()
 
@@ -76,6 +79,9 @@ class Pendulum extends Entity
     return alpha>0 && beta>0 && gamma>0
 
   step: ->
+    if hit = @touch('Fly')
+      hit.destroy()
+
     if Keyboard.release('SPACE')
       if not @bullet
         if @joint
@@ -109,10 +115,7 @@ class Pendulum extends Entity
         if @joint.GetLength() > 0.3
           @joint.SetLength(@joint.GetLength()-@crawl_speed)
 
-    p = @body.GetPosition()
-    @x=p.x*16
-    @y=p.y*16
-    @sprite.rotation=-@body.GetAngle()/(Math.PI*2)*360
+    super()
 
     if @bullet
       @rope[0] = new b2Vec2(@bullet.x,@bullet.y)
@@ -146,6 +149,7 @@ class Pendulum extends Entity
             @dis_joint(@rope[@rope.length-2])
 
   draw: ->
+    super()
     @rope[@rope.length-1] = new b2Vec2(@x,@y)
     for i in [0..@rope.length-1]
       knot = @rope[i]

@@ -8,6 +8,10 @@ class GameController extends Entity
     @text = new Text('10',10,10)
     @text.align = 'left'
 
+  step: ->
+    if Keyboard.press('ESCAPE')
+      @world.change_level('Menu')
+
   draw: ->
     tmp_date = new Date
     sec =  tmp_date-@date

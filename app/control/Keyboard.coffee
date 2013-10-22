@@ -105,8 +105,8 @@ class Keyboard
   @mouse_move: (e) ->
     Keyboard.MOUSE_XC = e.offsetX / Game.zoom_level
     Keyboard.MOUSE_YC = e.offsetY / Game.zoom_level
-    Keyboard.MOUSE_X = (Keyboard.MOUSE_XC - Art.offset_x)
-    Keyboard.MOUSE_Y = (Keyboard.MOUSE_YC - Art.offset_y)
+    Keyboard.MOUSE_X = (Keyboard.MOUSE_XC) # - Game.worlds[0].x)
+    Keyboard.MOUSE_Y = (Keyboard.MOUSE_YC) # - Game.worlds[0].y)
 
   @hold: (keyName) ->
     return Keyboard._hold.indexOf(Keyboard._keyCodes[keyName]) != -1

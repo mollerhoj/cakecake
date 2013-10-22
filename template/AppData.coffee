@@ -1,21 +1,26 @@
 class AppData
   @game_name = "template"
-  @width = 360
-  @height = 240
-  @scale = 2
+  @width = 640
+  @height = 480
+  @scale = 1
   @grid_on = false
   @physics = true
   @physics_pixel_per_meter = 16
+  @start_level = 'Menu'
   @entities:
    'Block': Block
    'Bullet': Bullet
    'Domino': Domino
    'Explosion': Explosion
    'Fireball': Fireball
+   'Fly': Fly
    'GameController': GameController
    'Hero': Hero
+   'Menu_1D': Menu_1D
+   'Menu_2D': Menu_2D
    'Pendulum': Pendulum
   @sprites:
+   'Background': 'Background.png'
    'Block': 'Block.png'
    'Block16': 'Block16.png'
    'Bullet': 'Bullet.png'
@@ -42,9 +47,11 @@ class AppData
    'Hero7': 'Hero7.png'
    'Hero8': 'Hero8.png'
    'Hero9': 'Hero9.png'
+   'Marker': 'Marker.png'
    'Pendulum': 'Pendulum.png'
    'PlaceHolder': 'PlaceHolder.png'
   @levels:
    'Level': Level
    'Level2': Level2
+   'Menu': Menu
 

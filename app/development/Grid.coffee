@@ -9,6 +9,7 @@ class Grid
   height: 16
   world_x: 0
   world_y: 0
+  art: null
 
   constructor: ->
     @visible = AppData.grid_on
@@ -30,14 +31,14 @@ class Grid
 
   draw: ->
     if @visible and @height > 1 and @width > 1
-      Art.stroke_color('Gray')
-      Art.alpha 0.5
+      @art.stroke_color('Gray')
+      @art.alpha 0.5
       line_x_n = AppData.width/@width
       line_y_n = AppData.height/@height
       for i in [0...line_x_n]
         x = @x+i*@width
-        Art.lineC(x,@y,x,@y+line_y_n*@height)
+        @art.lineC(x,@y,x,@y+line_y_n*@height)
       for i in [0...line_y_n]
         y = @y+i*@height
-        Art.lineC(@x,y,@x+line_x_n*@width,y)
-      Art.alpha 1
+        @art.lineC(@x,y,@x+line_x_n*@width,y)
+      @art.alpha 1
