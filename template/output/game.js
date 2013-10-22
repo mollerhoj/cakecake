@@ -7,47 +7,45 @@
 
   Art = (function() {
 
-    function Art() {}
+    Art.prototype.world = null;
 
-    Art.offset_x = 0;
+    function Art(world) {
+      this.world = world;
+    }
 
-    Art.offset_y = 0;
-
-    Art._scale = 1;
-
-    Art.get_alpha = function() {
+    Art.prototype.get_alpha = function() {
       return Game.context.globalAlpha;
     };
 
-    Art.alpha = function(alpha) {
+    Art.prototype.alpha = function(alpha) {
       return Game.context.globalAlpha = alpha;
     };
 
-    Art.color = function(color) {
+    Art.prototype.color = function(color) {
       Game.context.fillStyle = color;
       return Game.context.strokeStyle = color;
     };
 
-    Art.fill_color = function(color) {
+    Art.prototype.fill_color = function(color) {
       return Game.context.fillStyle = color;
     };
 
-    Art.stroke_color = function(color) {
+    Art.prototype.stroke_color = function(color) {
       return Game.context.strokeStyle = color;
     };
 
-    Art.lineC = function(x, y, x2, y2) {
+    Art.prototype.lineC = function(x1, y1, x2, y2) {
       Game.context.beginPath();
-      Game.context.moveTo(x + 0.5, y + 0.5);
+      Game.context.moveTo(x1 + 0.5, y1 + 0.5);
       Game.context.lineTo(x2 + 0.5, y2 + 0.5);
       return Game.context.stroke();
     };
 
-    Art.line = function(x, y, x2, y2) {
-      return Art.lineC(x + Art.offset_x, y + Art.offset_y, x2 + Art.offset_x, y2 + Art.offset_y);
+    Art.prototype.line = function(x, y, x2, y2) {
+      return this.lineC(x + this.world.x, y + this.world.y, x2 + this.world.x, y2 + this.world.y);
     };
 
-    Art.rectangleC = function(x, y, w, h, filled) {
+    Art.prototype.rectangleC = function(x, y, w, h, filled) {
       if (filled == null) {
         filled = false;
       }
@@ -58,7 +56,7 @@
       }
     };
 
-    Art.rectangle = function(x, y, w, h, filled) {
+    Art.prototype.rectangle = function(x, y, w, h, filled) {
       if (filled == null) {
         filled = false;
       }
@@ -109,12 +107,14 @@
 
     Entity.prototype.world = null;
 
+    Entity.prototype.art = null;
+
     Entity.prototype.z = 0;
 
     Entity.prototype.draw = function() {
       if (this.sprite) {
-        this.sprite.x = this.x;
-        this.sprite.y = this.y;
+        this.sprite.x = this.world.x + this.x;
+        this.sprite.y = this.world.y + this.y;
         return this.sprite.draw();
       }
     };
@@ -747,6 +747,32 @@
 
   console.log(Box2D);
 
+  Box2D.Common.Math.b2Vec2.prototype.to = function(that) {
+    var vec;
+    vec = that.Copy();
+    vec.Subtract(this);
+    return vec;
+  };
+
+  Box2D.Common.Math.b2Vec2.prototype.multiply = function(scale) {
+    this.x = this.x * scale;
+    return this.y = this.y * scale;
+  };
+
+  Box2D.Common.Math.b2Vec2.prototype.divide = function(scale) {
+    this.x = this.x / scale;
+    return this.y = this.y / scale;
+  };
+
+  Box2D.Common.Math.b2Vec2.prototype.closer_to = function(that, n) {
+    var t1;
+    t1 = this.to(that);
+    t1.Normalize();
+    t1.Multiply(n);
+    t1.Add(this);
+    return t1;
+  };
+
   Box2D.Common.Math.b2Vec2.prototype.dot = function(vec) {
     return console.log("calculate dot product");
   };
@@ -771,10 +797,6 @@
   Physics = (function() {
 
     Physics.prototype.world = null;
-
-    Physics.prototype.density = 20;
-
-    Physics.prototype.friction = 0.1;
 
     Physics.prototype.fix_def = null;
 
@@ -822,7 +844,8 @@
     Physics.prototype.build_boxes = function() {
       this.build_solid_box(32, 32, 32, 32, 45);
       this.build_solid_box(64, 128, 16, 64, 0);
-      return this.build_solid_box(232, 62, 132, 8, 10);
+      this.build_solid_box(232, 62, 132, 8, 10);
+      return this.build_solid_circle(200, 90, 22);
     };
 
     Physics.prototype.build_solid_line = function(x1, y1, x2, y2) {
@@ -837,24 +860,41 @@
       return this.solid.CreateFixture(this.fix_def);
     };
 
-    Physics.prototype.build_dynamic_box = function(x, y, w, h) {
+    Physics.prototype.build_solid_circle = function(x, y, r) {
+      this.fix_def.shape = new b2CircleShape;
+      this.fix_def.shape.SetRadius(r / this.PTM);
+      console.log(this.fix_def.shape);
+      this.fix_def.shape.m_p = new b2Vec2(x / this.PTM, y / this.PTM);
+      return this.solid.CreateFixture(this.fix_def);
+    };
+
+    Physics.prototype.build_dynamic = function(x, y, w, h, physics) {
       var bd, body, fd, shape;
       bd = new b2BodyDef();
       bd.type = b2Body.b2_dynamicBody;
       bd.position.Set(x / this.PTM, y / this.PTM);
-      shape = new b2PolygonShape();
-      shape.SetAsBox(w / this.PTM / 2, h / this.PTM / 2);
+      if (physics.shape === 'circle') {
+        shape = new b2CircleShape();
+        shape.SetRadius(Math.max(w, h) / this.PTM / 2);
+      } else {
+        shape = new b2PolygonShape();
+        shape.SetAsBox(w / this.PTM / 2, h / this.PTM / 2);
+      }
       fd = new b2FixtureDef();
       fd.shape = shape;
-      fd.density = this.density;
-      fd.friction = this.friction;
+      fd.density = physics.density;
+      fd.friction = physics.friction;
+      fd.restitution = physics.restitution;
       body = this.world.CreateBody(bd);
       body.CreateFixture(fd);
       return body;
     };
 
-    Physics.prototype.draw = function() {
-      return this.world.DrawDebugData();
+    Physics.prototype.draw = function(x, y) {
+      Game.context.save();
+      Game.context.translate(x, y);
+      this.world.DrawDebugData();
+      return Game.context.restore();
     };
 
     return Physics;
@@ -901,8 +941,8 @@
     Sprite.prototype.draw = function() {
       var image, x, y;
       image = this._get_image();
-      x = this.x - image.width / 2 + Art.offset_x;
-      y = this.y - image.height / 2 + Art.offset_y;
+      x = this.x - image.width / 2;
+      y = this.y - image.height / 2;
       if (this.rotation === 0 && this.scale_x === 1 && this.scale_y === 1) {
         return Game.context.drawImage(image, 0, 0, image.width, image.height, x, y, image.width, image.height);
       } else {
@@ -1089,10 +1129,13 @@
 
     World.prototype.physics = null;
 
+    World.prototype.art = null;
+
     function World() {
       if (AppData.physics) {
         this.physics = new Physics;
       }
+      this.art = new Art(this);
     }
 
     World.prototype.load_level = function(name) {
@@ -1170,9 +1213,10 @@
         entity.h = Game.images[name].height;
         entity.r = (entity.w + entity.h) / 4;
       }
+      entity.art = this.art;
       if (AppData.physics) {
         if (entity.physics) {
-          entity.body = this.physics.build_dynamic_box(x, y, entity.w, entity.h);
+          entity.body = this.physics.build_dynamic(x, y, entity.w, entity.h, entity.physics);
         }
       }
       this._entities.push(entity);
@@ -1204,11 +1248,11 @@
 
     World.prototype.draw = function() {
       var entity, _i, _len, _ref, _results;
-      Art.color('#EFF8FB');
-      Art.rectangleC(0, 0, AppData.width * AppData.scale / Game.zoom_level, AppData.height * AppData.scale / Game.zoom_level, true);
-      Art.color('#000000');
+      this.art.color('#EFF8FB');
+      this.art.rectangleC(0, 0, AppData.width * AppData.scale / Game.zoom_level, AppData.height * AppData.scale / Game.zoom_level, true);
+      this.art.color('#000000');
       if (this.physics) {
-        this.physics.draw();
+        this.physics.draw(this.x, this.y);
       }
       this._entities.sort(function(a, b) {
         if (Math.sign(a.z - b.z) === 0) {
@@ -1526,8 +1570,10 @@
     }
 
     Pendulum.prototype.physics = {
-      shape: 'rectangle',
-      friction: 0.25
+      shape: 'circle',
+      friction: 0.25,
+      density: 35,
+      restitution: 0.95
     };
 
     Pendulum.prototype.body = null;
@@ -1540,18 +1586,22 @@
 
     Pendulum.prototype.joint_last_angle = 90;
 
+    Pendulum.prototype.aim = 20;
+
     Pendulum.prototype.rope = [];
 
-    Pendulum.prototype.rope_length = 0;
+    Pendulum.prototype.rope_precision = 4;
 
     Pendulum.prototype.joint = null;
 
     Pendulum.prototype.bullet = null;
 
-    Pendulum.prototype.dis_joint = function(x, y) {
+    Pendulum.prototype.dis_joint = function(p) {
       var jointDef;
+      p = p.Copy();
+      p.divide(16);
       jointDef = new b2DistanceJointDef();
-      jointDef.Initialize(this.world.physics.solid, this.body, new b2Vec2(x / 16, y / 16), this.body.GetWorldCenter());
+      jointDef.Initialize(this.world.physics.solid, this.body, p, this.body.GetWorldCenter());
       jointDef.collideConnected = true;
       return this.joint = this.world.physics.world.CreateJoint(jointDef);
     };
@@ -1565,23 +1615,18 @@
       return this.joint = null;
     };
 
-    Pendulum.prototype.ray_shoot = function(x, y) {
-      var b, f, input, output, vec, x1, x2, y1, y2;
-      input = new b2RayCastInput();
+    Pendulum.prototype.ray_shoot = function(p) {
+      var b, f, input, output, x2, y2;
+      input = new b2RayCastInput(new b2Vec2(this.x / 16, this.y / 16), new b2Vec2(p.x / 16, p.y / 16));
       output = new b2RayCastOutput();
-      input.p1 = new b2Vec2(this.body.GetPosition().x, this.body.GetPosition().y);
-      input.p2 = new b2Vec2(x / 16, y / 16);
       b = this.world.physics.world.GetBodyList();
       while (b) {
         f = b.GetFixtureList();
         while (f) {
           if (f.RayCast(output, input, b.GetTransform())) {
-            vec = input.p2.Copy();
-            vec.Subtract(input.p1);
-            x1 = this.x;
-            y1 = this.y;
-            x2 = this.x + vec.x * 16 * output.fraction;
-            y2 = this.y + vec.y * 16 * output.fraction;
+            p = input.p1.to(input.p2);
+            x2 = this.x + p.x * 16 * output.fraction;
+            y2 = this.y + p.y * 16 * output.fraction;
             return new b2Vec2(x2, y2);
           }
           f = f.GetNext();
@@ -1590,26 +1635,60 @@
       }
     };
 
+    Pendulum.prototype.triangle_check = function(p1, p2, p3) {
+      var b, center, f;
+      b = this.world.physics.world.GetBodyList();
+      while (b) {
+        f = b.GetFixtureList();
+        while (f) {
+          center = f.GetShape().m_centroid;
+          if (center) {
+            if (this.in_triangle(new b2Vec2(center.x * 16, center.y * 16), p1, p2, p3)) {
+              return true;
+            }
+          }
+          f = f.GetNext();
+        }
+        b = b.GetNext();
+      }
+      return false;
+    };
+
+    Pendulum.prototype.in_triangle = function(p, p1, p2, p3) {
+      var alpha, beta, gamma;
+      alpha = ((p2.y - p3.y) * (p.x - p3.x) + (p3.x - p2.x) * (p.y - p3.y)) / ((p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y));
+      beta = ((p3.y - p1.y) * (p.x - p3.x) + (p1.x - p3.x) * (p.y - p3.y)) / ((p2.y - p3.y) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.y - p3.y));
+      gamma = 1 - alpha - beta;
+      return alpha > 0 && beta > 0 && gamma > 0;
+    };
+
     Pendulum.prototype.step = function() {
-      var angle, dir, position;
-      if (Keyboard.press('J')) {
+      var dir, hit, p, t0, t1, t2;
+      if (Keyboard.release('SPACE')) {
         if (!this.bullet) {
           if (this.joint) {
             this.dis_joint_off();
             this.rope = [];
-            this.rope_length = 0;
-          } else {
-            this.bullet = this.spawn('Bullet', this.x, this.y);
-            dir = (this.joint_last_angle + 360) % 360;
-            if (dir < 45) {
-              dir = 45;
-            } else if (dir > 270) {
-              dir = 45;
-            } else if (dir > 90 + 45) {
-              dir = 90 + 45;
-            }
-            this.bullet.direction = dir;
           }
+        }
+        if (this.bullet) {
+          this.bullet.destroy();
+          this.bullet = null;
+          this.rope.length = 1;
+        }
+      }
+      if (Keyboard.press('SPACE')) {
+        if (!this.bullet && !this.joint) {
+          this.bullet = this.spawn('Bullet', this.x, this.y);
+          dir = (this.joint_last_angle + 360) % 360;
+          if (dir < this.aim) {
+            dir = this.aim;
+          } else if (dir > 270) {
+            dir = this.aim;
+          } else if (dir > 180 - this.aim) {
+            dir = 180 - this.aim;
+          }
+          this.bullet.direction = dir;
         }
       }
       if (this.joint) {
@@ -1623,75 +1702,60 @@
           this.joint.SetLength(this.joint.GetLength() + this.crawl_speed);
         }
         if (Keyboard.hold('UP')) {
-          this.joint.SetLength(this.joint.GetLength() - this.crawl_speed);
+          if (this.joint.GetLength() > 0.3) {
+            this.joint.SetLength(this.joint.GetLength() - this.crawl_speed);
+          }
         }
       }
-      angle = this.body.GetAngle();
-      position = this.body.GetPosition();
-      this.x = position.x * 16;
-      this.y = position.y * 16;
-      return this.sprite.rotation = -angle / (Math.PI * 2) * 360;
-    };
-
-    Pendulum.prototype.draw = function() {
-      var hit, i, knot, n, px, py, vec, xx, yy, _i, _ref, _results;
-      Pendulum.__super__.draw.call(this);
+      p = this.body.GetPosition();
+      this.x = p.x * 16;
+      this.y = p.y * 16;
+      this.sprite.rotation = -this.body.GetAngle() / (Math.PI * 2) * 360;
       if (this.bullet) {
         this.rope[0] = new b2Vec2(this.bullet.x, this.bullet.y);
-        this.rope_length = 1;
-        if (hit = this.ray_shoot(this.bullet.x, this.bullet.y)) {
+        this.rope.length = 2;
+        if (hit = this.ray_shoot(this.rope[0])) {
           this.bullet.destroy();
           this.bullet = null;
-          this.dis_joint(hit.x, hit.y);
+          this.dis_joint(hit);
           this.rope[0] = new b2Vec2(hit.x, hit.y);
         }
       }
       if (this.joint) {
-        if (this.rope_length > 1) {
-          xx = this.rope[this.rope_length - 2].x;
-          yy = this.rope[this.rope_length - 2].y;
-          vec = new b2Vec2(xx, yy);
-          vec.Subtract(new b2Vec2(this.x, this.y));
-          vec.Normalize();
-          xx = this.rope[this.rope_length - 2].x - vec.x * 4;
-          yy = this.rope[this.rope_length - 2].y - vec.y * 4;
-          Art.stroke_color('red');
-          Art.line(this.x, this.y, xx, yy);
-          Art.stroke_color('blue');
-          if (!(hit = this.ray_shoot(xx, yy))) {
-            this.rope_length -= 1;
-            this.world.physics.world.DestroyJoint(this.joint);
-            this.joint = null;
-            this.dis_joint(this.rope[this.rope_length - 1].x, this.rope[this.rope_length - 1].y);
-          }
-        }
-        vec = this.joint.GetAnchorB().Copy();
-        vec.Subtract(this.joint.GetAnchorA());
-        vec.Normalize();
-        xx = this.rope[this.rope_length - 1].x + vec.x;
-        yy = this.rope[this.rope_length - 1].y + vec.y;
-        if (hit = this.ray_shoot(xx, yy)) {
-          this.rope[this.rope_length] = new b2Vec2(hit.x, hit.y);
-          this.rope_length += 1;
+        t0 = new b2Vec2(this.x, this.y);
+        t1 = this.rope[this.rope.length - 2].closer_to(t0, this.rope_precision);
+        if (hit = this.ray_shoot(t1)) {
+          this.rope[this.rope.length - 1] = hit;
+          this.rope.length += 1;
           this.world.physics.world.DestroyJoint(this.joint);
           this.joint = null;
-          this.dis_joint(hit.x, hit.y);
+          this.dis_joint(hit);
+        }
+        if (this.rope.length > 2) {
+          t2 = this.rope[this.rope.length - 3].closer_to(t0, this.rope_precision);
+          if (!(hit = this.ray_shoot(t2))) {
+            if (!this.triangle_check(t0, t1, t2)) {
+              this.rope.pop();
+              this.world.physics.world.DestroyJoint(this.joint);
+              this.joint = null;
+              return this.dis_joint(this.rope[this.rope.length - 2]);
+            }
+          }
         }
       }
-      px = null;
-      py = null;
-      this.rope[this.rope_length] = new b2Vec2(this.x, this.y);
-      n = 0;
+    };
+
+    Pendulum.prototype.draw = function() {
+      var i, knot, pknot, _i, _ref, _results;
+      this.rope[this.rope.length - 1] = new b2Vec2(this.x, this.y);
       _results = [];
-      for (i = _i = 0, _ref = this.rope_length; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+      for (i = _i = 0, _ref = this.rope.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
         knot = this.rope[i];
         if (knot) {
-          if (n > 0) {
-            Art.line(px, py, knot.x, knot.y);
+          if (i > 0) {
+            this.art.line(pknot.x, pknot.y, knot.x, knot.y);
           }
-          px = knot.x;
-          py = knot.y;
-          _results.push(n++);
+          _results.push(pknot = knot);
         } else {
           _results.push(void 0);
         }

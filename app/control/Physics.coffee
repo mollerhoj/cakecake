@@ -100,6 +100,31 @@ b2WeldJointDef = Box2D.Dynamics.Joints.b2WeldJointDef
 
 console.log Box2D
 
+#Vector from this to that
+Box2D.Common.Math.b2Vec2::to = (that) ->
+  vec = that.Copy()
+  vec.Subtract(this)
+  return vec
+
+#Multiply with number
+Box2D.Common.Math.b2Vec2::multiply = (scale) ->
+  @x = @x*scale
+  @y = @y*scale
+
+#Divide with number
+Box2D.Common.Math.b2Vec2::divide = (scale) ->
+  @x = @x/scale
+  @y = @y/scale
+
+#Closer to
+Box2D.Common.Math.b2Vec2::closer_to = (that,n) ->
+  t1 = this.to(that)
+  t1.Normalize()
+  t1.Multiply(n)
+  t1.Add(this)
+  return t1
+  
+
 Box2D.Common.Math.b2Vec2::dot = (vec) ->
   console.log "calculate dot product"
 
@@ -118,8 +143,6 @@ Box2D.Common.Math.b2Vec2::angle_between = (vec) ->
 
 class Physics
   world: null
-  density: 20
-  friction: 0.1
   fix_def: null
   solid: null
   PTM: 16
@@ -165,6 +188,7 @@ class Physics
     @build_solid_box(32,32,32,32,45)
     @build_solid_box(64,128,16,64,0)
     @build_solid_box(232,62,132,8,10)
+    @build_solid_circle(200,90,22)
 
   build_solid_line: (x1,y1,x2,y2) ->
     @fix_def.shape = new b2PolygonShape
@@ -176,19 +200,34 @@ class Physics
     @fix_def.shape.SetAsOrientedBox w/(@PTM)/2, h/(@PTM)/2, new b2Vec2(x/@PTM,y/@PTM), -rotation/180*Math.PI
     @solid.CreateFixture(@fix_def);
 
-  build_dynamic_box: (x,y,w,h) ->
+  build_solid_circle: (x,y,r) ->
+    @fix_def.shape = new b2CircleShape
+    @fix_def.shape.SetRadius r/@PTM
+    console.log @fix_def.shape
+    @fix_def.shape.m_p = new b2Vec2(x/@PTM,y/@PTM)
+    @solid.CreateFixture(@fix_def);
+
+  build_dynamic: (x,y,w,h,physics) ->
     bd = new b2BodyDef()
     bd.type = b2Body.b2_dynamicBody
     bd.position.Set(x/@PTM, y/@PTM)
-    shape = new b2PolygonShape()
-    shape.SetAsBox w/@PTM/2, h/@PTM/2
+    if physics.shape == 'circle'
+      shape = new b2CircleShape()
+      shape.SetRadius Math.max(w,h)/@PTM/2
+    else
+      shape = new b2PolygonShape()
+      shape.SetAsBox w/@PTM/2, h/@PTM/2
     fd = new b2FixtureDef()
     fd.shape = shape
-    fd.density = @density
-    fd.friction = @friction
+    fd.density = physics.density
+    fd.friction = physics.friction
+    fd.restitution = physics.restitution
     body = @world.CreateBody(bd)
     body.CreateFixture fd
     return body
 
-  draw: ->
+  draw: (x,y) ->
+    Game.context.save()
+    Game.context.translate(x,y)
     @world.DrawDebugData()
+    Game.context.restore()

@@ -8,10 +8,12 @@ class World
   y: 0
   pause: false
   physics: null
+  art: null
 
   constructor: ->
     if AppData.physics
       @physics = new Physics
+    @art = new Art(this)
 
   # create level
   load_level: (name) ->
@@ -52,7 +54,7 @@ class World
       console.log "Error: #{name} not found"
 
     #Set entity values
-    entity = new cl 
+    entity = new cl
     entity.world = this
     entity.sx = x
     entity.sy = y
@@ -71,10 +73,13 @@ class World
       entity.h = Game.images[name].height
       entity.r = (entity.w+entity.h)/4
 
+    #set art
+    entity.art = @art
+
     #set physics
     if AppData.physics
       if entity.physics
-        entity.body = @physics.build_dynamic_box(x,y,entity.w,entity.h)
+        entity.body = @physics.build_dynamic(x,y,entity.w,entity.h,entity.physics)
 
     @_entities.push (entity)
     entity.reset()
@@ -98,12 +103,12 @@ class World
   draw: ->
 
     #Draw background
-    Art.color '#EFF8FB'
-    Art.rectangleC 0,0,AppData.width * AppData.scale / Game.zoom_level,AppData.height * AppData.scale / Game.zoom_level,true
-    Art.color '#000000'
+    @art.color '#EFF8FB'
+    @art.rectangleC 0,0,AppData.width * AppData.scale / Game.zoom_level,AppData.height * AppData.scale / Game.zoom_level,true
+    @art.color '#000000'
 
     if @physics
-      @physics.draw()
+      @physics.draw(@x,@y)
 
     #Sort for z values. not tested.
     @_entities.sort (a,b) ->

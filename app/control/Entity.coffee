@@ -16,14 +16,15 @@ class Entity
   alpha: 1
   rotation: 0
   index: 1
-  sprite: null 
+  sprite: null
   world: null
+  art: null
   z: 0
 
   draw: ->
     if @sprite
-      @sprite.x = @x
-      @sprite.y = @y
+      @sprite.x = @world.x + @x
+      @sprite.y = @world.y + @y
       @sprite.draw()
 
   init: ->
