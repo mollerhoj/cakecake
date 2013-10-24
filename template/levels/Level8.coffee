@@ -42,13 +42,6 @@ class Level8
       rotation: 12
       w: 209
       h: 32
-    7:
-      name: 'Bullet'
-      x: 120
-      y: 365
-      rotation: 0
-      w: 4
-      h: 4
     8:
       name: 'Spider'
       x: 120

@@ -49,13 +49,6 @@ class Level5
       rotation: -86
       w: 209
       h: 32
-    8:
-      name: 'Bullet'
-      x: 106
-      y: 357
-      rotation: 0
-      w: 4
-      h: 4
     9:
       name: 'Spider'
       x: 106

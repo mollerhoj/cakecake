@@ -77,13 +77,6 @@ class Level6
       rotation: 0
       w: 24
       h: 21
-    12:
-      name: 'Bullet'
-      x: 131
-      y: 363
-      rotation: 0
-      w: 4
-      h: 4
     13:
       name: 'Block'
       x: 512

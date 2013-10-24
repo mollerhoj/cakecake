@@ -23,6 +23,9 @@ class Art
   stroke_color: (color) ->
     Game.context.strokeStyle = color
 
+  stroke_size: (size) ->
+    Game.context.lineWidth = size
+
   lineC: (x1,y1,x2,y2) ->
     Game.context.beginPath()
     Game.context.moveTo(x1+0.5,y1+0.5)

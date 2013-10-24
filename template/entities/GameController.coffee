@@ -18,17 +18,28 @@ class GameController extends Entity
 
     if not @hero
       @hero = @world.entities_of_class('Spider')[0]
+
+    if not @tutorial
+      @tutorial = @world.entities_of_class('Tutorial')[0]
     
     if @hero
+      if @hero.y > AppData.height
+        @lose()
       if @hero.touch('Fly')
-        @win()
+        if @tutorial
+          @tutorial.fly_taken(@win)
+        else
+          @win()
 
-
+  lose: =>
+    if not @won
+      @world.reset()
+      
 
   win: =>
     if not @won
       @won = true
-      console.log 'won'
+      Storage.save('level_n_reached',@world.current_level_n+1)
       @announcer.say('Well Done!',140,@world.next_level)
 
   draw: ->

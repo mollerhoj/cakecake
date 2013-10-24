@@ -70,6 +70,8 @@ class Keyboard
   @_released: []
   @_hold: []
 
+  @mouse_moves
+
   # Listen for keys being presses and being released. As this happens
   # add and remove them from the key store.
   @key_released: (c) ->
@@ -103,6 +105,7 @@ class Keyboard
     return false #to disable default drag in canvas
 
   @mouse_move: (e) ->
+    Keyboard.mouse_moves = 2
     Keyboard.MOUSE_XC = e.offsetX / Game.zoom_level
     Keyboard.MOUSE_YC = e.offsetY / Game.zoom_level
     Keyboard.MOUSE_X = (Keyboard.MOUSE_XC) # - Game.worlds[0].x)
@@ -118,6 +121,8 @@ class Keyboard
     return Keyboard._released.indexOf(Keyboard._keyCodes[keyName]) != -1
     
   @step: ->
+    if Keyboard.mouse_moves > 0
+      Keyboard.mouse_moves -=1
     Keyboard._pressed = Keyboard._pre_pressed.splice(0)
     Keyboard._released = Keyboard._pre_released.splice(0)
     Keyboard._hold = Keyboard._hold.concat(Keyboard._pressed)

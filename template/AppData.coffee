@@ -18,6 +18,8 @@ class AppData
    'Menu_1D': Menu_1D
    'Menu_2D': Menu_2D
    'Spider': Spider
+   'Storage': Storage
+   'Tutorial': Tutorial
    'Web': Web
   @sprites:
    'Background': 'Background.png'
@@ -27,6 +29,7 @@ class AppData
    'Flare': 'Flare.svg'
    'Fly': 'Fly.svg'
    'Marker': 'Marker.svg'
+   'Marker_square': 'Marker_square.svg'
    'PlaceHolder': 'PlaceHolder.png'
    'Spider': 'Spider.svg'
    'Spider_Menu': 'Spider_Menu.svg'

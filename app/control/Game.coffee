@@ -54,7 +54,7 @@ class Game
     canvas.height = AppData.height * AppData.scale
     document.body.appendChild canvas
     context = canvas.getContext("2d")
-    context.textBaseline = 'top'
+    context.textBaseline = 'middle'
     if not AppData.anti_aliasing
       context.imageSmoothingEnabled = false # Spec
       context.mozImageSmoothingEnabled = false # Mozilla

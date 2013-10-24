@@ -16,11 +16,12 @@ class Spider extends Entity
   speed: 2
   jump_power: 800
   crawl_speed: 0.1
-  aim: 30
+  aim: 45
   aim2: 90
 
   rope: []
   rope_precision: 4 #No shorter than any blocks width
+  rope_max_length: 200
 
   joint: null
   bullet: null
@@ -97,6 +98,16 @@ class Spider extends Entity
       @bullet = @spawn('Bullet',@x,@y)
       @bullet.direction = @aim2
 
+  rope_length: ->
+    res = 0
+    for i in [0..@rope.length-1]
+      knot = @rope[i]
+      if knot
+        if i > 0
+          res+= pknot.to(knot).Length()
+        pknot = knot
+    return res
+
   step: ->
     if hit = @touch('Fly')
       hit.destroy()
@@ -120,7 +131,8 @@ class Spider extends Entity
       if Keyboard.hold('RIGHT')
         @body.ApplyImpulse(new b2Vec2(@speed,0),@body.GetWorldCenter())
       if Keyboard.hold('DOWN')
-        @joint.SetLength(@joint.GetLength()+@crawl_speed)
+        if @rope_length() < @rope_max_length
+          @joint.SetLength(@joint.GetLength()+@crawl_speed)
       if Keyboard.hold('UP')
         if @joint.GetLength() > 0.3
           @joint.SetLength(@joint.GetLength()-@crawl_speed)
@@ -131,12 +143,18 @@ class Spider extends Entity
 
     if @bullet
       @rope[0] = new b2Vec2(@bullet.x,@bullet.y)
-      @rope.length = 2
-      if hit = @ray_shoot(@rope[0])
+      t0 = new b2Vec2(@x,@y)
+      if t0.to(@rope[0]).Length() > @rope_max_length
         @bullet.destroy()
         @bullet = null
-        @dis_joint(hit)
-        @rope[0] = new b2Vec2(hit.x,hit.y)
+        @rope = []
+      else
+        @rope.length = 2
+        if hit = @ray_shoot(@rope[0])
+          @bullet.destroy()
+          @bullet = null
+          @dis_joint(hit)
+          @rope[0] = new b2Vec2(hit.x,hit.y)
 
     if @joint
       t0 = new b2Vec2(@x,@y)
@@ -169,11 +187,14 @@ class Spider extends Entity
       @rotation = @aim2-90
 
     super()
+    
     @rope[@rope.length-1] = new b2Vec2(@x,@y)
     for i in [0..@rope.length-1]
       knot = @rope[i]
       if knot
         if i > 0
+          @art.stroke_color('black')
+          @art.stroke_size(1.2)
           @art.line(pknot.x,pknot.y,knot.x,knot.y)
         pknot = knot
 

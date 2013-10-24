@@ -12,9 +12,13 @@ class Text
   name: null
 
   font: 'Dosis'
-  font_size: 16 
+  font_size: 16
   font_style: "" # "", bold, italic,
+  color: 'black'
   string: ''
+  stroke: true
+  stroke_color: 'white'
+  stroke_size: 2
 
   constructor: (string='',x=0,y=0) ->
     @string = string
@@ -23,13 +27,17 @@ class Text
 
   draw: (string='',x=0,y=0) ->
     @_update()
-    if @rotation != 0
+    if false #@rotation != 0
       Game.context.save()
       Game.context.translate(@x+get_width()/2,@y+@get_height()/2)
       Game.context.rotate(Math.PI/180*@rotation)
       Game.context.fillText(@string,-@get_width()/2,-@get_height()/2)
       Game.context.restore()
     else
+      Game.context.fillStyle = @color
+      Game.context.strokeStyle = @stroke_color
+      Game.context.lineWidth = @stroke_size*2
+      Game.context.strokeText(@string, @x, @y)
       Game.context.fillText(@string, @x, @y)
 
   get_width: ->

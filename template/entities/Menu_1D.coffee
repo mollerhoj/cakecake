@@ -2,33 +2,51 @@ class Menu_1D extends Entity
 
   index: 0
   button_n: 2
-  texts: []
+  buttons: []
   button_space: 50
   marker: null
   spider: null
 
   init: ->
-    @x = 50
     @y = 300
     @marker = new Sprite('Marker')
     @spider = new Sprite('Spider_Menu',450,350)
-    @title = new Text('Itsy Bitsy',AppData.width/2,20)
     @credit = new Text('By Jens Dahl Mollerhoj',AppData.width/2,140)
     @credit.font_size = 20
     @credit.font = 'Norwester'
+    @title = new Text('Itsy Bitsy',AppData.width/2,70)
     @title.font_size = 120
     @title.font = 'Norwester'
-    @texts[0] = new Text('Play')
-    @texts[1] = new Text('Options')
 
     for i in [0...@button_n]
-      t = @texts[i]
-      if t
-        t.align = 'left'
-        t.font = 'Norwester'
-        t.font_size = 30
-        t.y = @y + i * @button_space
-        t.x = @x
+      b = @world.spawn('Button')
+      b.id = i
+      b.x = 60
+      b.w = 100
+      b.h = 20
+      b.y = @y + i * @button_space
+      b.sprite = null
+      b.text = new Text('Play')
+      b.text.font = 'Norwester'
+      b.text.font_size = 30
+      b.text.align = 'left'
+      b.menu = this
+      @buttons[i] = b
+
+    @buttons[0].text.string = 'Play'
+    @buttons[1].text.string = 'Options'
+
+  set_index: (i) ->
+    @index = i
+
+  press: (i) ->
+    if @index == 0
+      @destroy()
+      if Storage.load('level_n_reached') && Storage.load('level_n_reached') > 1
+        @spawn('Menu_2D')
+      else
+        @world.destroy_all()
+        @world.load_level("Level")
 
   step: ->
     if Keyboard.press('DOWN')
@@ -36,9 +54,7 @@ class Menu_1D extends Entity
     if Keyboard.press('UP')
       @index -= 1
     if Keyboard.press('SPACE')
-      if @index == 0
-        @destroy()
-        @spawn('Menu_2D')
+      @press(@index)
 
     if @index < 0
       @index = 0
@@ -47,17 +63,24 @@ class Menu_1D extends Entity
 
   draw: ->
     @marker.y = @y + @index * @button_space
-    @marker.x = @x + @marker.w/4
-    @marker.rotation+=1
+    if @index == 0
+      @marker.w = 90
+      @marker.x = 90
+    if @index == 1
+      @marker.x = 110
+      @marker.w = 110
     @marker.draw()
 
     @credit.draw()
     @spider.draw()
     @title.draw()
 
-    for text in @texts
-      text.draw()
+    for button in @buttons
+      button.draw()
 
-    
+  destroy: ->
+    super()
+    for button in @buttons
+      button.destroy()
 
 

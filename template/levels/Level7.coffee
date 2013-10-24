@@ -77,13 +77,6 @@ class Level7
       rotation: 0
       w: 24
       h: 21
-    12:
-      name: 'Bullet'
-      x: 83
-      y: 293
-      rotation: 0
-      w: 4
-      h: 4
     13:
       name: 'Block'
       x: 504

@@ -52,7 +52,7 @@ class World
   # reset
   reset: ->
     @destroy_all()
-    @load_level(current_level)
+    @load_level(@current_level)
 
   destroy: (entity) ->
     @_entities_to_destroy.push entity
