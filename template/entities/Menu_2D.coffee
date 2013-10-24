@@ -3,30 +3,45 @@ class Menu_2D extends Entity
   index_x: -1
   index_y: 0
   button_n: 14
-  texts: []
+  buttons: []
   cols: 4
   button_x_space: 100
   button_y_space: 50
   marker: null
+  headline: "Select Level"
+  heading: null
+  heading_x: 320
+  heading_y: 220
 
   init: ->
     @x = 160
     @y = 300
     @marker = new Sprite('Marker')
-    @texts[0] = new Text('Back')
-    @texts[0].x = @x-@button_x_space
-    @texts[0].y = @y
+
+    @heading = new Text(@headline,@heading_x,@heading_y)
+    @heading.align = 'center'
+    @heading.font = 'Norwester'
+    @heading.font_size = 60
+
+    b = @world.spawn('Button')
+    b.x = @x-@button_x_space
+    b.y = @y
+    b.text = new Text('Back')
+
+    @buttons[0] = b
 
     for i in [1..@button_n]
-      @texts[i] = new Text("Level #{i}")
+      b = @world.spawn('Button')
+      b.text = new Text("Level #{i}")
+      @buttons[i] = b
 
     for i in [1..@button_n]
-      t = @texts[i]
-      if t
-        t.align = 'center'
-        t.font = 'Arial'
-        t.y = @y + Math.floor((i-1) / @cols) * @button_y_space
-        t.x = @x + ((i-1) % @cols) * @button_x_space
+      b = @buttons[i]
+      if b
+        b.text.align = 'center'
+        b.text.font = 'Norwester'
+        b.y = @y + Math.floor((i-1) / @cols) * @button_y_space
+        b.x = @x + ((i-1) % @cols) * @button_x_space
 
   space: ->
     if @index_x == -1
@@ -71,10 +86,6 @@ class Menu_2D extends Entity
     @marker.y = @y + @index_y * @button_y_space
     @marker.x = @x + @index_x * @button_x_space + @marker.w/4
     @marker.draw()
-
-    for text in @texts
-      text.draw()
-
-    
-
+    @heading.string = @headline
+    @heading.draw()
 

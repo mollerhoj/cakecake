@@ -15,6 +15,7 @@ class Game
     return w
 
   @init:(mode) ->
+    console.log 'init'
     @mode = mode
     #Create canvas:
     Game.context = Game.create_canvas()
@@ -54,23 +55,24 @@ class Game
     document.body.appendChild canvas
     context = canvas.getContext("2d")
     context.textBaseline = 'top'
-    context.imageSmoothingEnabled = false # Spec
-    context.mozImageSmoothingEnabled = false # Mozilla
-    context.webkitImageSmoothingEnabled = false # Chrome / Safari
+    if not AppData.anti_aliasing
+      context.imageSmoothingEnabled = false # Spec
+      context.mozImageSmoothingEnabled = false # Mozilla
+      context.webkitImageSmoothingEnabled = false # Chrome / Safari
     return context
 
   @setup_keyboard: ->
     canvas = document.getElementsByTagName("canvas")[0]
-    document.body.onkeydown = =>
-      Keyboard.key_pressed(event.keyCode)
-    document.body.onkeyup = =>
-      Keyboard.key_released(event.keyCode)
-    canvas.onmousemove = =>
-      Keyboard.mouse_move(event)
-    canvas.onmousedown = =>
-      Keyboard.mouse_down(event.which)
-    canvas.onmouseup = =>
-      Keyboard.mouse_up(event.which)
+    document.onkeydown = (evt) =>
+      Keyboard.key_pressed(evt.keyCode)
+    document.onkeyup = (evt) =>
+      Keyboard.key_released(evt.keyCode)
+    canvas.onmousemove = (evt) =>
+      Keyboard.mouse_move(evt)
+    canvas.onmousedown = (evt) =>
+      Keyboard.mouse_down(evt.which)
+    canvas.onmouseup = (evt) =>
+      Keyboard.mouse_up(evt.which)
     canvas.oncontextmenu = => return false #remove right-click menu
     canvas.addEventListener "touchstart", Keyboard.touch_start, false
     canvas.addEventListener "touchend", Keyboard.touch_end, false

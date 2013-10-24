@@ -1,12 +1,62 @@
 <head>
+  <meta content='text/html;charset=utf-8' http-equiv='Content-Type'>
+  <meta content='utf-8' http-equiv='encoding'>
 <script type='text/javascript' src='libraries/Box2dWeb-2.1.a.3.js'></script>
+<script type='text/javascript' src='/Users/mollerhoj3/work/coffee/espresso/dev_libraries/FileSaver.js'></script>
   <script type='text/javascript' src='game.js'></script>
   <style>
-    @font-face {font-family: 'Dosis'; src: url('fonts/Dosis.ttf');}
-    @font-face {font-family: 'Londrina Outline'; src: url('fonts/Londrina Outline.ttf');}
+    @font-face {font-family: 'Norwester'; src: url('fonts/Norwester.ttf');}
   </style>
   <title>template</title>
 </head>
 <body>
-
+  <button type='button' id='pause_toggle'>Pause</button>
+  <select id='entity_selector'>
+    <option value='Announcer'>Announcer</option>
+    <option value='Block'>Block</option>
+    <option value='Bullet'>Bullet</option>
+    <option value='Button'>Button</option>
+    <option value='Fly'>Fly</option>
+    <option value='GameController'>GameController</option>
+    <option value='Menu_1D'>Menu_1D</option>
+    <option value='Menu_2D'>Menu_2D</option>
+    <option value='Spider'>Spider</option>
+    <option value='Web'>Web</option>
+  </select>
+  <select id='level_selector'>
+    <option value='Level'>Level</option>
+    <option value='Level10'>Level10</option>
+    <option value='Level11'>Level11</option>
+    <option value='Level2'>Level2</option>
+    <option value='Level3'>Level3</option>
+    <option value='Level4'>Level4</option>
+    <option value='Level5'>Level5</option>
+    <option value='Level6'>Level6</option>
+    <option value='Level7'>Level7</option>
+    <option value='Level8'>Level8</option>
+    <option value='Level9'>Level9</option>
+    <option value='Menu'>Menu</option>
+  </select>
+  </br>
+  <button type='button' id='grid_toggle'>Grid</button>
+  <span>x:</span>
+  <input id='grid_x'type='Number' value='0'></input>
+  <span>y:</span>
+  <input id='grid_y'type='Number' value='0'></input>
+  <span>width:</span>
+  <input id='grid_width' type='Number' value='16'></input>
+  <span>height:</span>
+  <input id='grid_height' type='Number' value='16'></input>  </br>
+  <select id='save_type_selector'>
+    <option value='Flow'>Flow</option>
+    <option value='Grid'>Grid</option>
+    <option value='Vector'>Vector</option>
+  </select>
+  <button type='button' id='save_button'>Save</button>
+  </br>
+  <input type='checkbox' id='debug_draw_checkbox' value='draw' >Draw physics<br>  <ul/>
+    <li><strong>Left mouse:</strong> Spawn entity.
+    <li><strong>Right mouse:</strong> Spawn entity.
+    <li><strong>Shift:</strong> Snap to grid.
+  <ul>
 </body>

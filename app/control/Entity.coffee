@@ -6,7 +6,7 @@ class Entity
   sy: 0
   w: undefined
   h: undefined
-  r: 0
+  r: undefined
   visible: true
   name: null
   scale_x: 1
@@ -24,12 +24,38 @@ class Entity
 
   draw: ->
     if @sprite
+      @sprite.rotation = @rotation
+      @sprite.w = @w
+      @sprite.h = @h
       @sprite.x = @world.x + @x
       @sprite.y = @world.y + @y
       @sprite.draw()
 
   init: ->
     return null
+
+  set_x: (x) ->
+    @x = x
+    @update_position()
+
+  set_y: (y) ->
+    @y = y
+    @update_position()
+
+  update_position: ->
+    if @physics && @body
+      @body.SetPosition(new b2Vec2(@x/16,@y/16))
+
+  set_rotation: (rotation) ->
+    @rotation = rotation
+    if @physics && @body
+      @body.SetAngle((-@rotation/360)*Math.PI*2)
+
+  set_w: (w) ->
+    @w = w
+
+  set_h: (h) ->
+    @h = h
 
   step: ->
     if @physics && @body

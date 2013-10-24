@@ -40,6 +40,6 @@ class Text
     return @font_size
 
   _update: ->
-    Game.context.font = @font_style + " " + @font_size + " " + @font
+    Game.context.font = @font_style + " " + @font_size + "px '" + @font + "'"
     Game.context.textAlign=@align
 

@@ -6,3 +6,4 @@ settings_grid_on = false
 settings_physics = true
 settings_physics_pixel_per_meter = 16
 settings_start_level = 'Menu'
+settings_anti_aliasing = false

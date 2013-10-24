@@ -158,11 +158,12 @@ class Physics
 
     @create_world()
     @setup_debug_draw()
+
     solid_def = new b2BodyDef()
     solid_def.position.Set(0,0)
     @solid = @world.CreateBody(solid_def)
     @solid.SetUserData('my_SOLID')
-    @build_edges()
+
     @setup_contact_listener()
 
   setup_contact_listener: ->
@@ -216,11 +217,11 @@ class Physics
     @fix_def.shape.m_p = new b2Vec2(x/@PTM,y/@PTM)
     @solid.CreateFixture(@fix_def);
 
-  build_dynamic: (x,y,w,h,physics) ->
+  build_dynamic: (x,y,w,h,r,physics) ->
 
     if physics.shape == 'circle'
       shape = new b2CircleShape()
-      shape.SetRadius Math.max(w,h)/@PTM/2
+      shape.SetRadius r/@PTM
     else
       shape = new b2PolygonShape()
       shape.SetAsBox w/@PTM/2, h/@PTM/2

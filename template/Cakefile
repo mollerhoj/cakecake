@@ -85,6 +85,7 @@ class AppData\n
   @physics = #{settings_physics}\n
   @physics_pixel_per_meter = #{settings_physics_pixel_per_meter}\n
   @start_level = '#{settings_start_level}'\n
+  @anti_aliasing = '#{settings_anti_aliasing}'\n
   @entities:\n
 #{write_appdata_res('entities')}
   @sprites:\n
@@ -113,6 +114,8 @@ build_index = (mode)->
   clear_file(file)
   put_to_file(file,"
 <head>\n
+  <meta content='text/html;charset=utf-8' http-equiv='Content-Type'>\n
+  <meta content='utf-8' http-equiv='encoding'>\n
 #{write_dev_libraries(mode)}
   <script type='text/javascript' src='game.js'></script>\n
   <style>\n
@@ -187,8 +190,8 @@ write_development_selector= (resource) ->
 
 # Build all resources
 build_resources = ->
-  exec 'cp -r fonts output'
   exec 'cp -r sounds output'
+  exec 'cp -r fonts output'
   exec 'cp -r sprites output'
   exec 'cp -r libraries output'
 
@@ -238,10 +241,12 @@ task 'zip', 'Zip output', ->
   console.log 'Done.'
 
 task 'export', 'Export single application file from source files', ->
+  exec 'rm -r output'
   export_all()
   console.log 'Done.'
 
 task 'build', 'Build single application file from source files', ->
+  exec 'rm -r output'
   build_all()
   console.log 'Done.'
 

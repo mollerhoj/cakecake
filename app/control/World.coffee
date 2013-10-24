@@ -11,6 +11,7 @@ class World
   art: null
   background: null
   current_level: ''
+  current_level_n: -1
 
   constructor: ->
     @background = new Sprite('Background',AppData.width/2,AppData.height/2)
@@ -18,17 +19,35 @@ class World
       @physics = new Physics
     @art = new Art(this)
 
-  change_level: (name) ->
+  next_level: =>
+    if @current_level_n == -1
+      console.log "Error: Level number not set, can't go to next"
+    else
+      @change_level(@current_level,@current_level_n+1)
+
+  change_level: (name,index=1) ->
     @destroy_all()
-    @load_level(name)
+    @load_level(name,index)
 
   load_level: (name,index=1) ->
     if index != 1
+      name = name.replace /\d/, ""
       name = name+index
     @current_level = name
+    @current_level_n = index
     level = AppData.levels[name]
-    for key,value of level.data
-      @spawn(value.name,value.x,value.y)
+    if level == undefined
+      console.log "Error: #{name} not found"
+    for number,dataobject of level.data
+      s = @spawn(dataobject.name,dataobject.x,dataobject.y)
+      for property, value of dataobject
+        s[property] = value
+      if dataobject.rotation
+        s.set_rotation(dataobject.rotation)
+      if dataobject.w
+        s.set_w(dataobject.w)
+      if dataobject.h
+        s.set_h(dataobject.h)
 
   # reset
   reset: ->
@@ -49,7 +68,7 @@ class World
   spawn: (name,x = 0,y = 0) ->
     #Load entity
     cl = AppData.entities[name]
-    if not cl or cl == undefined
+    if cl == undefined or not cl instanceof Entity
       console.log "Error: #{name} not found"
 
     #Set entity values
@@ -82,7 +101,7 @@ class World
     #set physics
     if AppData.physics
       if entity.physics
-        entity.body = @physics.build_dynamic(x,y,entity.w,entity.h,entity.physics)
+        entity.body = @physics.build_dynamic(x,y,entity.w,entity.h,entity.r,entity.physics)
         entity.body.SetUserData(entity)
 
     @_entities.push (entity)
@@ -90,14 +109,14 @@ class World
     entity.init()
     return entity
 
-  objects_of_class: (c) ->
+  entities_of_class: (c) ->
     res = []
     for entity in @_entities
       if entity.name == c then res.push(entity)
     return res
       
   number_of: (c) ->
-    return @objects_of_class(c).length
+    return @entities_of_class(c).length
 
   exists: (c) ->
     return @number_of(c) > 0

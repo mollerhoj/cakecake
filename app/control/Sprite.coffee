@@ -2,8 +2,6 @@ class Sprite
   x: 0
   y: 0
   visible: true
-  scale_x: 1
-  scale_y: 1
   alpha: 1
   rotation: 0
   index: 1
@@ -21,16 +19,21 @@ class Sprite
 
   draw: ->
     image = @_get_image()
-    x = @x - image.width/2
-    y = @y - image.height/2
-    if @rotation == 0 and @scale_x == 1 and @scale_y == 1
-      Game.context.drawImage(image,0,0,image.width,image.height,x,y,image.width,image.height)
+    x = @x - @w/2
+    y = @y - @h/2
+    if @rotation == 0 and @w == image.width and @h == image.height
+      Game.context.drawImage(image,0,0,@w,@h,x,y,@w,@h)
     else
+      w = image.width
+      h = image.height
       Game.context.save()
-      Game.context.translate(x+image.width/2,y+image.height/2)
-      Game.context.scale(@scale_x,@scale_y)
-      Game.context.rotate(Math.PI/180*(0-@rotation))
-      Game.context.drawImage(image,0,0,image.width,image.height,-image.width/2,-image.height/2,image.width,image.height)
+      Game.context.translate(x+@w/2,y+@h/2)
+      Game.context.rotate(-Math.PI/180*(@rotation%360))
+      Game.context.scale(@w/w,@h/h)
+      Game.context.translate(-@w/2,-@h/2)
+      Game.context.drawImage(image,0,0,@w,@h)
+      #Game.context.drawImage(image,0,0,image.width,image.height,0,0,image.width,image.height)
+      #Game.context.drawImage(image,0,0,@w,@h,-(w+(@w/w))/2,-(h+(@h/h))/2,@w,@h)
       Game.context.restore()
 
   _get_image: ->

@@ -21,6 +21,9 @@ class Builder
       txt += "      name: '#{e.name}'\n"
       txt += "      x: #{e.x}\n"
       txt += "      y: #{e.y}\n"
+      txt += "      rotation: #{e.rotation}\n"
+      txt += "      w: #{e.w}\n"
+      txt += "      h: #{e.h}\n"
     return txt
 
   save_level:(name) ->
@@ -32,6 +35,9 @@ class Builder
       o.name = e.name
       o.x = e.sx
       o.y = e.sy
+      o.rotation = e.rotation
+      o.w = e.w
+      o.h = e.h
       level.data[i] = o
       i += 1
 
@@ -49,13 +55,26 @@ class Builder
 
     # Hold objects
     if @hold
-      @hold.x = Keyboard.MOUSE_X
-      @hold.y = Keyboard.MOUSE_Y
+      @hold.set_x(Keyboard.MOUSE_X)
+      @hold.set_y(Keyboard.MOUSE_Y)
       if Keyboard.hold('SHIFT') and @grid
         @hold.x=@hold.x - @hold.x % @grid.width+@grid.width/2
         @hold.y=@hold.y - @hold.y % @grid.height+@grid.height/2
       @hold.sx = @hold.x
       @hold.sy = @hold.y
+
+      if Keyboard.hold('Q')
+        @hold.set_rotation(@hold.rotation+1)
+      if Keyboard.hold('E')
+        @hold.set_rotation(@hold.rotation-1)
+      if Keyboard.hold('W')
+        @hold.h += 1
+      if Keyboard.hold('S')
+        @hold.h -= 1
+      if Keyboard.hold('D')
+        @hold.w += 1
+      if Keyboard.hold('A')
+        @hold.w -= 1
 
     if Keyboard.release('MOUSE_LEFT')
       @save_level(@editor.level)

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1 Basic//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11-basic.dtd">
+<svg version="1.1" baseProfile="basic" id="Layer_1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="23.227px"
+	 height="20.469px" viewBox="0 0 23.227 20.469" xml:space="preserve">
+<g>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M14.463,12.216c1.611,1.46,3.57,1.922,4.377,1.031"/>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M12.051,2.962c4.891,4.428,7.927,9.028,6.789,10.285"/>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M15.424,14.143c1.613,1.46,3.844,1.622,4.984,0.361"/>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M14.478,3.273c4.89,4.427,7.543,9.45,5.931,11.23"/>
+</g>
+<g>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M9.946,11.941c-1.554,1.521-3.494,2.061-4.334,1.202"/>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M11.99,2.601c-4.712,4.615-7.565,9.332-6.378,10.543"/>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M9.06,13.905c-1.554,1.521-3.775,1.771-4.966,0.556"/>
+	<path fill="none" stroke="#000000" stroke-miterlimit="10" d="M9.578,3.006c-4.712,4.617-7.166,9.74-5.484,11.455"/>
+</g>
+<radialGradient id="SVGID_1_" cx="11.8379" cy="12.8306" r="4.1067" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#731700"/>
+	<stop  offset="0.2155" style="stop-color:#781700"/>
+	<stop  offset="0.4817" style="stop-color:#871800"/>
+	<stop  offset="0.7735" style="stop-color:#A01900"/>
+	<stop  offset="1" style="stop-color:#B91A00"/>
+</radialGradient>
+<circle fill="url(#SVGID_1_)" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="11.838" cy="12.831" r="4.107"/>
+<circle fill="#050303" stroke="#000000" stroke-miterlimit="10" cx="11.837" cy="14.337" r="3.187"/>
+<circle fill="#FFFFFF" cx="10.52" cy="15.653" r="0.866"/>
+<circle fill="#FFFFFF" cx="13.029" cy="15.653" r="0.867"/>
+</svg>

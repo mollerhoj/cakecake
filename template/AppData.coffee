@@ -7,51 +7,41 @@ class AppData
   @physics = true
   @physics_pixel_per_meter = 16
   @start_level = 'Menu'
+  @anti_aliasing = 'false'
   @entities:
+   'Announcer': Announcer
    'Block': Block
    'Bullet': Bullet
-   'Domino': Domino
-   'Explosion': Explosion
-   'Fireball': Fireball
+   'Button': Button
    'Fly': Fly
    'GameController': GameController
-   'Hero': Hero
    'Menu_1D': Menu_1D
    'Menu_2D': Menu_2D
-   'Pendulum': Pendulum
+   'Spider': Spider
+   'Web': Web
   @sprites:
    'Background': 'Background.png'
-   'Block': 'Block.png'
-   'Block16': 'Block16.png'
+   'Block': 'Block.svg'
    'Bullet': 'Bullet.png'
-   'Explosion': 'Explosion.png'
-   'Explosion2': 'Explosion2.png'
-   'Explosion3': 'Explosion3.png'
-   'Explosion4': 'Explosion4.png'
-   'Fireball': 'Fireball.png'
-   'Fireball2': 'Fireball2.png'
-   'Fireball3': 'Fireball3.png'
-   'Fireball4': 'Fireball4.png'
-   'Fireball5': 'Fireball5.png'
-   'Fireball6': 'Fireball6.png'
-   'Fireball7': 'Fireball7.png'
-   'Fireball8': 'Fireball8.png'
-   'Heart': 'Heart.png'
-   'Hero': 'Hero.png'
-   'Hero10': 'Hero10.png'
-   'Hero2': 'Hero2.png'
-   'Hero3': 'Hero3.png'
-   'Hero4': 'Hero4.png'
-   'Hero5': 'Hero5.png'
-   'Hero6': 'Hero6.png'
-   'Hero7': 'Hero7.png'
-   'Hero8': 'Hero8.png'
-   'Hero9': 'Hero9.png'
-   'Marker': 'Marker.png'
-   'Pendulum': 'Pendulum.png'
+   'Button': 'Button.svg'
+   'Flare': 'Flare.svg'
+   'Fly': 'Fly.svg'
+   'Marker': 'Marker.svg'
    'PlaceHolder': 'PlaceHolder.png'
+   'Spider': 'Spider.svg'
+   'Spider_Menu': 'Spider_Menu.svg'
+   'Web': 'Web.svg'
   @levels:
    'Level': Level
+   'Level10': Level10
+   'Level11': Level11
    'Level2': Level2
+   'Level3': Level3
+   'Level4': Level4
+   'Level5': Level5
+   'Level6': Level6
+   'Level7': Level7
+   'Level8': Level8
+   'Level9': Level9
    'Menu': Menu
 
