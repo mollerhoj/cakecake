@@ -26,8 +26,8 @@ class Announcer extends Entity
     if @time > 0
       @time-=1
       if @time == 0
-        @callback()
-
+        if @callback
+          @callback()
       
   draw: ->
     if @time > 0

@@ -43,6 +43,9 @@ class Game
     #Start running
     setInterval(Game.run, 16)
 
+    #Start drawing
+    Game.draw()
+
   @set_zoom: (rate) ->
     Game.context.scale(rate/Game.zoom_level,rate/Game.zoom_level)
     Game.zoom_level = rate
@@ -80,10 +83,22 @@ class Game
     canvas.addEventListener "touchleave", Keyboard.touch_end, false
     canvas.addEventListener "touchmove", Keyboard.touch_move, false
 
+  @requestAnimFrame: (callback) ->
+  window.requestAnimationFrame or
+  window.webkitRequestAnimationFrame or
+  window.mozRequestAnimationFrame or (callback) ->
+    window.setTimeout callback, 1000 / 60
+
+  @draw: =>
+    #Game.requestAnimFrame(Game.draw)
+    #
+    for world in Game.worlds
+      world.draw()
+    requestAnimationFrame(Game.draw)
+
   @run: =>
     for world in Game.worlds
       world.step()
-      world.draw()
 
     if Game.editor
       Game.editor.step()

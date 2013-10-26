@@ -8,9 +8,9 @@ class GameController extends Entity
   
   init: ->
     @announcer = @world.spawn('Announcer')
+    @announcer.say('Catch the fly!',100)
     @text = new Text('10',10,10)
     @text.align = 'left'
-    
 
   step: ->
     if Keyboard.press('ESCAPE')

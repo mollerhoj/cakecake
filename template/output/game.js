@@ -340,7 +340,8 @@
       if (Game.mode === "build") {
         Game.editor = new Editor(Game.worlds[0]);
       }
-      return setInterval(Game.run, 16);
+      setInterval(Game.run, 16);
+      return Game.draw();
     };
 
     Game.set_zoom = function(rate) {
@@ -393,13 +394,28 @@
       return canvas.addEventListener("touchmove", Keyboard.touch_move, false);
     };
 
+    Game.requestAnimFrame = function(callback) {};
+
+    window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function(callback) {
+      return window.setTimeout(callback, 1000 / 60);
+    };
+
+    Game.draw = function() {
+      var world, _i, _len, _ref;
+      _ref = Game.worlds;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        world = _ref[_i];
+        world.draw();
+      }
+      return requestAnimationFrame(Game.draw);
+    };
+
     Game.run = function() {
       var world, _i, _len, _ref;
       _ref = Game.worlds;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         world = _ref[_i];
         world.step();
-        world.draw();
       }
       if (Game.editor) {
         Game.editor.step();
@@ -1051,7 +1067,7 @@
       x = this.x - this.w / 2;
       y = this.y - this.h / 2;
       if (this.rotation === 0 && this.w === image.width && this.h === image.height) {
-        return Game.context.drawImage(image, 0, 0, this.w, this.h, x, y, this.w, this.h);
+        return Game.context.drawImage(image, 0, 0, Math.round(this.w), Math.round(this.h), Math.round(x), Math.round(y), Math.round(this.w), Math.round(this.h));
       } else {
         w = image.width;
         h = image.height;
@@ -1516,7 +1532,9 @@
       if (this.time > 0) {
         this.time -= 1;
         if (this.time === 0) {
-          return this.callback();
+          if (this.callback) {
+            return this.callback();
+          }
         }
       }
     };
@@ -1671,6 +1689,7 @@
 
     GameController.prototype.init = function() {
       this.announcer = this.world.spawn('Announcer');
+      this.announcer.say('Catch the fly!', 100);
       this.text = new Text('10', 10, 10);
       return this.text.align = 'left';
     };

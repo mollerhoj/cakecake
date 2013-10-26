@@ -22,7 +22,8 @@ class Sprite
     x = @x - @w/2
     y = @y - @h/2
     if @rotation == 0 and @w == image.width and @h == image.height
-      Game.context.drawImage(image,0,0,@w,@h,x,y,@w,@h)
+      #Math.round for performance
+      Game.context.drawImage(image,0,0,Math.round(@w),Math.round(@h),Math.round(x),Math.round(y),Math.round(@w),Math.round(@h))
     else
       w = image.width
       h = image.height
