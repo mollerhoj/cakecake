@@ -1,15 +1,14 @@
 class Text
+  name: null
   x: 0
   y: 0
-  visible: true
-  scale_x: 1
-  scale_y: 1
-  alpha: 1
-  rotation: 0
-  index: 1
-  align: 'center'
   z: 0
-  name: null
+  visible: true
+  alpha: 1
+  angle: 0
+  index: 1
+
+  align: 'center'
 
   font: 'Dosis'
   font_size: 16
@@ -27,10 +26,10 @@ class Text
 
   draw: (string='',x=0,y=0) ->
     @_update()
-    if false #@rotation != 0
+    if @angle != 0
       Game.context.save()
       Game.context.translate(@x+get_width()/2,@y+@get_height()/2)
-      Game.context.rotate(Math.PI/180*@rotation)
+      Game.context.rotate(Math.PI/180*@angle)
       Game.context.fillText(@string,-@get_width()/2,-@get_height()/2)
       Game.context.restore()
     else

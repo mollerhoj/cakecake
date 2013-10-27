@@ -1,0 +1,869 @@
+class Level
+  @data:
+    1:
+      name: 'GameController'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+    2:
+      name: 'Tutorial'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+    3:
+      name: 'Block'
+      x: 324
+      y: 139
+      angle: -1
+      w: 209
+      h: 32
+    4:
+      name: 'Web'
+      x: 225
+      y: 146
+      angle: -11
+      w: 83
+      h: 39
+    5:
+      name: 'Block'
+      x: 130
+      y: 154
+      angle: 10
+      w: 209
+      h: 32
+    6:
+      name: 'Block'
+      x: 501
+      y: 165
+      angle: -19
+      w: 209
+      h: 32
+    7:
+      name: 'Web'
+      x: 569
+      y: 220
+      angle: -70
+      w: 83
+      h: 39
+    8:
+      name: 'Fly'
+      x: 412
+      y: 223
+      angle: 0
+      w: 16
+      h: 8
+    9:
+      name: 'Block'
+      x: 588
+      y: 262
+      angle: 87
+      w: 209
+      h: 32
+    10:
+      name: 'Block'
+      x: 47
+      y: 266
+      angle: -87
+      w: 209
+      h: 32
+    11:
+      name: 'Spider'
+      x: 322
+      y: 283
+      angle: 0
+      w: 24
+      h: 21
+    12:
+      name: 'Web'
+      x: 87
+      y: 347
+      angle: -28
+      w: 86
+      h: 39
+    13:
+      name: 'Block'
+      x: 144
+      y: 362
+      angle: -9
+      w: 209
+      h: 32
+    14:
+      name: 'Block'
+      x: 304
+      y: 372
+      angle: 2
+      w: 209
+      h: 32
+    15:
+      name: 'Block'
+      x: 492
+      y: 374
+      angle: -3
+      w: 209
+      h: 32
+    16:
+      name: 'Announcer'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+class Level10
+  @data:
+    1:
+      name: 'GameController'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+class Level11
+  @data:
+    1:
+      name: 'GameController'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+class Level2
+  @data:
+    1:
+      name: 'GameController'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+    2:
+      name: 'Block'
+      x: 331
+      y: 75
+      angle: 0
+      w: 209
+      h: 32
+    3:
+      name: 'Block'
+      x: 140
+      y: 79
+      angle: 5
+      w: 209
+      h: 32
+    4:
+      name: 'Block'
+      x: 506
+      y: 96
+      angle: -12
+      w: 209
+      h: 32
+    5:
+      name: 'Web'
+      x: 574
+      y: 132
+      angle: -74
+      w: 67
+      h: 39
+    6:
+      name: 'Block'
+      x: 54
+      y: 180
+      angle: -87
+      w: 209
+      h: 32
+    7:
+      name: 'Block'
+      x: 594
+      y: 207
+      angle: -90
+      w: 209
+      h: 32
+    8:
+      name: 'Spider'
+      x: 100
+      y: 224
+      angle: 0
+      w: 24
+      h: 21
+    9:
+      name: 'Block'
+      x: 336
+      y: 266
+      angle: 5
+      w: 209
+      h: 32
+    10:
+      name: 'Block'
+      x: 176
+      y: 266
+      angle: -3
+      w: 209
+      h: 32
+    11:
+      name: 'Block'
+      x: 47
+      y: 344
+      angle: -98
+      w: 209
+      h: 32
+    12:
+      name: 'Block'
+      x: 520
+      y: 355
+      angle: 38
+      w: 209
+      h: 32
+    13:
+      name: 'Fly'
+      x: 108
+      y: 359
+      angle: 0
+      w: 16
+      h: 8
+    14:
+      name: 'Web'
+      x: 76
+      y: 417
+      angle: 147
+      w: 83
+      h: 39
+    15:
+      name: 'Block'
+      x: 344
+      y: 434
+      angle: 10
+      w: 209
+      h: 32
+    16:
+      name: 'Block'
+      x: 147
+      y: 440
+      angle: -6
+      w: 209
+      h: 32
+class Level3
+  @data:
+    1:
+      name: 'GameController'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+    2:
+      name: 'Block'
+      x: 314
+      y: 88
+      angle: 0
+      w: 209
+      h: 32
+    3:
+      name: 'Block'
+      x: 128
+      y: 107
+      angle: 15
+      w: 209
+      h: 32
+    4:
+      name: 'Block'
+      x: 487
+      y: 137
+      angle: -38
+      w: 209
+      h: 32
+    5:
+      name: 'Fly'
+      x: 475
+      y: 192
+      angle: 0
+      w: 16
+      h: 8
+    6:
+      name: 'Web'
+      x: 551
+      y: 212
+      angle: 124
+      w: 83
+      h: 39
+    7:
+      name: 'Block'
+      x: 46
+      y: 238
+      angle: -92
+      w: 209
+      h: 32
+    8:
+      name: 'Block'
+      x: 469
+      y: 247
+      angle: 8
+      w: 209
+      h: 32
+    9:
+      name: 'Block'
+      x: 316
+      y: 260
+      angle: 0
+      w: 209
+      h: 32
+    10:
+      name: 'Block'
+      x: 579
+      y: 288
+      angle: -77
+      w: 209
+      h: 32
+    11:
+      name: 'Spider'
+      x: 527
+      y: 327
+      angle: 0
+      w: 24
+      h: 21
+    12:
+      name: 'Block'
+      x: 50
+      y: 353
+      angle: -80
+      w: 209
+      h: 32
+    13:
+      name: 'Web'
+      x: 80
+      y: 384
+      angle: 123
+      w: 83
+      h: 39
+    14:
+      name: 'Web'
+      x: 85
+      y: 399
+      angle: 0
+      w: 83
+      h: 39
+    15:
+      name: 'Block'
+      x: 510
+      y: 404
+      angle: 4
+      w: 209
+      h: 32
+    16:
+      name: 'Web'
+      x: 73
+      y: 406
+      angle: -167
+      w: 83
+      h: 39
+    17:
+      name: 'Block'
+      x: 338
+      y: 415
+      angle: 0
+      w: 209
+      h: 32
+    18:
+      name: 'Block'
+      x: 136
+      y: 415
+      angle: 0
+      w: 209
+      h: 32
+class Level4
+  @data:
+    1:
+      name: 'GameController'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+    2:
+      name: 'Block'
+      x: 501
+      y: 51
+      angle: -19
+      w: 209
+      h: 32
+    3:
+      name: 'Block'
+      x: 377
+      y: 95
+      angle: 60
+      w: 209
+      h: 32
+    4:
+      name: 'Fly'
+      x: 470
+      y: 132
+      angle: 0
+      w: 16
+      h: 8
+    5:
+      name: 'Block'
+      x: 559
+      y: 162
+      angle: 71
+      w: 209
+      h: 32
+    6:
+      name: 'Block'
+      x: 248
+      y: 209
+      angle: 23
+      w: 209
+      h: 32
+    7:
+      name: 'Block'
+      x: 113
+      y: 244
+      angle: -7
+      w: 209
+      h: 32
+    8:
+      name: 'Block'
+      x: 458
+      y: 309
+      angle: 42
+      w: 209
+      h: 32
+    9:
+      name: 'Block'
+      x: 30
+      y: 321
+      angle: 93
+      w: 209
+      h: 32
+    10:
+      name: 'Spider'
+      x: 110
+      y: 314
+      angle: 0
+      w: 24
+      h: 21
+    11:
+      name: 'Block'
+      x: 290
+      y: 392
+      angle: 13
+      w: 209
+      h: 32
+    12:
+      name: 'Block'
+      x: 124
+      y: 414
+      angle: -2
+      w: 209
+      h: 32
+class Level5
+  @data:
+    1:
+      name: 'GameController'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+    2:
+      name: 'Block'
+      x: 332
+      y: 166
+      angle: -4
+      w: 209
+      h: 32
+    3:
+      name: 'Block'
+      x: 137
+      y: 194
+      angle: 20
+      w: 209
+      h: 32
+    4:
+      name: 'Block'
+      x: 530
+      y: 204
+      angle: -18
+      w: 209
+      h: 32
+    5:
+      name: 'Fly'
+      x: 533
+      y: 272
+      angle: 0
+      w: 16
+      h: 8
+    6:
+      name: 'Block'
+      x: 573
+      y: 319
+      angle: -115
+      w: 209
+      h: 32
+    7:
+      name: 'Block'
+      x: 57
+      y: 322
+      angle: -86
+      w: 209
+      h: 32
+    9:
+      name: 'Spider'
+      x: 106
+      y: 357
+      angle: 0
+      w: 24
+      h: 21
+    10:
+      name: 'Block'
+      x: 441
+      y: 396
+      angle: -8
+      w: 209
+      h: 32
+    11:
+      name: 'Block'
+      x: 152
+      y: 403
+      angle: 10
+      w: 209
+      h: 32
+    12:
+      name: 'Block'
+      x: 378
+      y: 470
+      angle: -69
+      w: 209
+      h: 32
+    13:
+      name: 'Block'
+      x: 227
+      y: 478
+      angle: 81
+      w: 209
+      h: 32
+    14:
+      name: 'Announcer'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+class Level6
+  @data:
+    1:
+      name: 'GameController'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+    2:
+      name: 'Block'
+      x: 258
+      y: 94
+      angle: -91
+      w: 209
+      h: 32
+    3:
+      name: 'Block'
+      x: 598
+      y: 104
+      angle: 85
+      w: 209
+      h: 32
+    4:
+      name: 'Block'
+      x: 257
+      y: 195
+      angle: -90
+      w: 209
+      h: 32
+    5:
+      name: 'Block'
+      x: 419
+      y: 233
+      angle: -86
+      w: 209
+      h: 32
+    6:
+      name: 'Block'
+      x: 169
+      y: 282
+      angle: -5
+      w: 209
+      h: 32
+    7:
+      name: 'Block'
+      x: 594
+      y: 293
+      angle: -87
+      w: 209
+      h: 32
+    8:
+      name: 'Block'
+      x: 421
+      y: 321
+      angle: -89
+      w: 209
+      h: 32
+    9:
+      name: 'Fly'
+      x: 515
+      y: 350
+      angle: 0
+      w: 16
+      h: 8
+    10:
+      name: 'Block'
+      x: 62
+      y: 355
+      angle: -101
+      w: 209
+      h: 32
+    11:
+      name: 'Spider'
+      x: 131
+      y: 363
+      angle: 0
+      w: 24
+      h: 21
+    13:
+      name: 'Block'
+      x: 512
+      y: 404
+      angle: 6
+      w: 209
+      h: 32
+    14:
+      name: 'Block'
+      x: 337
+      y: 413
+      angle: 2
+      w: 209
+      h: 32
+    15:
+      name: 'Block'
+      x: 145
+      y: 426
+      angle: 6
+      w: 209
+      h: 32
+    16:
+      name: 'Announcer'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+class Level7
+  @data:
+    1:
+      name: 'GameController'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+    2:
+      name: 'Block'
+      x: 582
+      y: 51
+      angle: 45
+      w: 209
+      h: 32
+    3:
+      name: 'Block'
+      x: 56
+      y: 61
+      angle: -47
+      w: 209
+      h: 32
+    4:
+      name: 'Block'
+      x: 134
+      y: 142
+      angle: -46
+      w: 209
+      h: 32
+    5:
+      name: 'Block'
+      x: 485
+      y: 143
+      angle: 43
+      w: 209
+      h: 32
+    6:
+      name: 'Block'
+      x: 501
+      y: 194
+      angle: 13
+      w: 209
+      h: 32
+    7:
+      name: 'Block'
+      x: 114
+      y: 195
+      angle: -14
+      w: 209
+      h: 32
+    8:
+      name: 'Block'
+      x: 600
+      y: 259
+      angle: -92
+      w: 209
+      h: 32
+    9:
+      name: 'Block'
+      x: 24
+      y: 266
+      angle: -87
+      w: 209
+      h: 32
+    10:
+      name: 'Fly'
+      x: 523
+      y: 274
+      angle: 0
+      w: 16
+      h: 8
+    11:
+      name: 'Spider'
+      x: 83
+      y: 293
+      angle: 0
+      w: 24
+      h: 21
+    13:
+      name: 'Block'
+      x: 504
+      y: 343
+      angle: 0
+      w: 209
+      h: 32
+    14:
+      name: 'Block'
+      x: 118
+      y: 349
+      angle: 3
+      w: 209
+      h: 32
+    15:
+      name: 'Block'
+      x: 419
+      y: 437
+      angle: -87
+      w: 209
+      h: 32
+    16:
+      name: 'Block'
+      x: 203
+      y: 437
+      angle: 88
+      w: 209
+      h: 32
+    17:
+      name: 'Announcer'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+class Level8
+  @data:
+    1:
+      name: 'GameController'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+    2:
+      name: 'Block'
+      x: 284
+      y: 79
+      angle: 12
+      w: 209
+      h: 32
+    3:
+      name: 'Fly'
+      x: 134
+      y: 199
+      angle: 0
+      w: 16
+      h: 8
+    4:
+      name: 'Block'
+      x: 322
+      y: 254
+      angle: 4
+      w: 209
+      h: 32
+    5:
+      name: 'Block'
+      x: 322
+      y: 268
+      angle: -5
+      w: 209
+      h: 32
+    6:
+      name: 'Block'
+      x: 118
+      y: 280
+      angle: 12
+      w: 209
+      h: 32
+    8:
+      name: 'Spider'
+      x: 120
+      y: 365
+      angle: 0
+      w: 24
+      h: 21
+    9:
+      name: 'Block'
+      x: 50
+      y: 383
+      angle: -73
+      w: 209
+      h: 32
+    10:
+      name: 'Block'
+      x: 155
+      y: 429
+      angle: 5
+      w: 209
+      h: 32
+    11:
+      name: 'Block'
+      x: 341
+      y: 429
+      angle: -4
+      w: 209
+      h: 32
+    12:
+      name: 'Block'
+      x: 353
+      y: 479
+      angle: 25
+      w: 209
+      h: 32
+    13:
+      name: 'Announcer'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16
+class Level9
+  @data:
+    1:
+      name: 'GameController'
+      x: 0
+      y: 0
+      angle: 0
+      w: 16
+      h: 16

@@ -8,6 +8,7 @@ class World
   y: 0
   pause: false
   physics: null
+  factory: null
   art: null
   background: null
   current_level: ''
@@ -18,6 +19,7 @@ class World
     if AppData.physics
       @physics = new Physics
     @art = new Art(this)
+    @factory = new Factory
 
   next_level: =>
     if @current_level_n == -1
@@ -42,12 +44,12 @@ class World
       s = @spawn(dataobject.name,dataobject.x,dataobject.y)
       for property, value of dataobject
         s[property] = value
-      if dataobject.rotation
-        s.set_rotation(dataobject.rotation)
-      if dataobject.w
-        s.set_w(dataobject.w)
-      if dataobject.h
-        s.set_h(dataobject.h)
+      if dataobject.angle
+        s.set_angle(dataobject.angle)
+      if dataobject.width
+        s.set_width(dataobject.width)
+      if dataobject.height
+        s.set_height(dataobject.height)
 
   # reset
   reset: ->
@@ -65,49 +67,8 @@ class World
     return @_entities
 
   # Spawn new
-  spawn: (name,x = 0,y = 0) ->
-    #Load entity
-    cl = AppData.entities[name]
-    if cl == undefined or not cl instanceof Entity
-      console.log "Error: #{name} not found"
-
-    #Set entity values
-    entity = new cl
-    entity.world = this
-    entity.sx = x
-    entity.sy = y
-
-    #set name
-    if entity.name == null
-      entity.name = name
-
-    #set sprite
-    if entity.sprite == null
-      if !Game.images[name]
-        name = 'PlaceHolder'
-      entity.sprite = new Sprite(name)
-
-    #set size
-    if entity.w == undefined
-      entity.w = entity.sprite.w
-    if entity.h == undefined
-      entity.h = entity.sprite.h
-    if entity.r == undefined
-      entity.r = (entity.w+entity.h)/4
-
-    #set art
-    entity.art = @art
-
-    #set physics
-    if AppData.physics
-      if entity.physics
-        entity.body = @physics.build_dynamic(x,y,entity.w,entity.h,entity.r,entity.physics)
-        entity.body.SetUserData(entity)
-
-    @_entities.push (entity)
-    entity.reset()
-    entity.init()
-    return entity
+  spawn: (name,x,y) ->
+    return @factory.spawn(name,x,y)
 
   entities_of_class: (c) ->
     res = []

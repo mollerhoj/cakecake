@@ -1,32 +1,34 @@
 # Parent of all entities (user created game objects)
 class Entity
+  name: null
   x: 0
   y: 0
-  sx: 0
-  sy: 0
-  w: undefined
-  h: undefined
-  r: undefined
+  z: 0
+  width: undefined
+  height: undefined
+  radius: undefined
+  angle: 0
+
+  start_x: 0
+  start_y: 0
+  start_z: 0
+  start_width: undefined
+  start_height: undefined
+  start_radius: undefined
+  start_angle: 0
+
   visible: true
-  name: null
-  scale_x: 1
-  scale_y: 1
-  offset_x: 0
-  offset_y: 0
-  alpha: 1
-  rotation: 0
-  index: 1
   sprite: null
   world: null
   art: null
-  z: 0
+
   hit_hash: {}
 
   draw: ->
     if @sprite
-      @sprite.rotation = @rotation
-      @sprite.w = @w
-      @sprite.h = @h
+      @sprite.angle = @angle
+      @sprite.width = @width
+      @sprite.height = @height
       @sprite.x = @world.x + @x
       @sprite.y = @world.y + @y
       @sprite.draw()
@@ -44,37 +46,36 @@ class Entity
 
   update_position: ->
     if @physics && @body
-      @body.SetPosition(new b2Vec2(@x/16,@y/16))
+      @body.SetPosition(new b2Vec2(@x/Appdata.pixel_per_meter,@y/Appdata.pixel_per_meter))
 
-  set_rotation: (rotation) ->
-    @rotation = rotation
+  set_angle: (angle) ->
+    @angle = angle
     if @physics && @body
-      @body.SetAngle((-@rotation/360)*Math.PI*2)
+      @body.SetAngle((-@angle/360)*Math.PI*2)
 
-  set_w: (w) ->
-    @w = w
+  set_width: (width) ->
+    @width = width
 
-  set_h: (h) ->
-    @h = h
+  set_height: (height) ->
+    @height = height
 
   step: ->
     if @physics && @body
       p = @body.GetPosition()
-      @x=p.x*16
-      @y=p.y*16
-      @sprite.rotation=-@body.GetAngle()/(Math.PI*2)*360
+      @x=p.x*AppData.pixel_per_meter
+      @y=p.y*AppData.pixel_per_meter
+      @sprite.angle=-@body.GetAngle()/(Math.PI*2)*360
 
     return null
 
+  #TODO: Move physical body
   move_towards: (x,y,speed) ->
-    dir = @direction_to(x,y)
+    dir = @angle_to(x,y)
     @x += Math.cos(dir/180*Math.PI)*speed
     @y -= Math.sin(dir/180*Math.PI)*speed
     
-  direction_to: (x,y) ->
-    dx = x - @x;
-    dy = y - @y;
-    -Math.atan2(dy,dx)*180/Math.PI
+  angle_to: (x,y) ->
+    return -Math.atan2(y - @y,x - @x)*180/Math.PI
     
   nearest: (c) ->
     shortest = 9999
@@ -116,15 +117,15 @@ class Entity
     return @objects_distance(obj1,obj2) <= obj1.r+obj2.r
 
   objects_touch: (obj1,obj2) ->
-    l1 = obj1.x-obj1.w/2
-    r1 = obj1.x+obj1.w/2
-    l2 = obj2.x-obj2.w/2
-    r2 = obj2.x+obj2.w/2
+    l1 = obj1.x-obj1.width/2
+    r1 = obj1.x+obj1.width/2
+    l2 = obj2.x-obj2.width/2
+    r2 = obj2.x+obj2.width/2
 
-    u1 = obj1.y-obj1.h/2
-    d1 = obj1.y+obj1.h/2
-    u2 = obj2.y-obj2.h/2
-    d2 = obj2.y+obj2.h/2
+    u1 = obj1.y-obj1.height/2
+    d1 = obj1.y+obj1.height/2
+    u2 = obj2.y-obj2.height/2
+    d2 = obj2.y+obj2.height/2
     return r1 > l2 && l1 < r2 && d1 > u2 && u1 < d2
 
   objects_distance: (obj1,obj2) ->
@@ -139,8 +140,12 @@ class Entity
     @world.destroy this
 
   reset: ->
-    @x = @sx
-    @y = @sy
+    @x = @start_x
+    @y = @start_y
+    @width = @start_width
+    @height = @start_height
+    @radius = @start_radius
+    @angle = @start_angle
 
   # TODO. This should be moved to the collsion object.
   mouse_hits: ->

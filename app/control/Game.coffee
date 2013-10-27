@@ -94,6 +94,8 @@ class Game
     #
     for world in Game.worlds
       world.draw()
+    if Game.editor
+      Game.editor.draw()
     Game.requestAnimFrame(Game.draw)
 
   @run: =>
@@ -102,4 +104,3 @@ class Game
 
     if Game.editor
       Game.editor.step()
-      Game.editor.draw()

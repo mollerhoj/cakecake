@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+ESPRESSO_PATH=$(dirname $0)
+GAME_PATH=$(pwd)
+
+if [ $1 == 'new' ]; then
+  cp -r "$ESPRESSO_PATH/template" $2
+  echo "Created new espresso project '$2' from template."
+else
+  if test -e .espresso; then
+    echo "Only the 'new' command is currently implemented"
+  else
+    echo 'Error: This is not an espresso folder'
+    exit
+  fi
+fi

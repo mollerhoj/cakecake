@@ -21,7 +21,7 @@ class Builder
       txt += "      name: '#{e.name}'\n"
       txt += "      x: #{e.x}\n"
       txt += "      y: #{e.y}\n"
-      txt += "      rotation: #{e.rotation}\n"
+      txt += "      angle: #{e.angle}\n"
       txt += "      w: #{e.w}\n"
       txt += "      h: #{e.h}\n"
     return txt
@@ -35,7 +35,7 @@ class Builder
       o.name = e.name
       o.x = e.sx
       o.y = e.sy
-      o.rotation = e.rotation
+      o.angle = e.angle
       o.w = e.w
       o.h = e.h
       level.data[i] = o
@@ -64,9 +64,9 @@ class Builder
       @hold.sy = @hold.y
 
       if Keyboard.hold('Q')
-        @hold.set_rotation(@hold.rotation+1)
+        @hold.set_angle(@hold.angle+1)
       if Keyboard.hold('E')
-        @hold.set_rotation(@hold.rotation-1)
+        @hold.set_angle(@hold.angle-1)
       if Keyboard.hold('W')
         @hold.h += 1
       if Keyboard.hold('S')

@@ -1,38 +1,38 @@
-Espresso
+Cakecake
 ========
 by Jens Dahl Møllerhøj
 
-### What is Espresso?
+### What is Cakecake?
 A lightning fast game development engine. It is used to build tiny html5
-canvas games in minutes. Espresso is written entirely in coffeescript.
+canvas games in minutes. Cakecake is written entirely in coffeescript.
 
-Espresso is influenced by the rails philosophy in the way that it is
+Cakecake is influenced by the rails philosophy in the way that it is
 oppinionated, emphasizes convention over configuration, is DRY, and supports
 agile development.
 
 Its API resamples the way 'Game Maker' by Mark Overmars works.
 
 ### Idea and philosopy
-In classic software, an iterative development process help catch bugs early,
-and lets the system be designed as the developer learns. In indie game
-development, iterative processes lets the developer design games as
-development goes.
+In classic software, an iterative development process help catch bugs early by
+designing incrementally. In indie game development, an iterative process gives
+the developer the ultimate create freedom.
 
-It is not only more fun to develop game ideas iteratively. It produces games
+It is not only more fun to develop games iteratively. It produces games
 that are more original, and more fun.
 
 Just like Bret Victor believes that artists should have an imediate connection
 with their work, I believe that artistist need as high a number of iterations
 as possible. (This is almost, but not completely the same thing)
 
-### Why is it faster to build games with Espresso?
+### Why is it faster to build games with Cakecake?
 
-Espresso generates all nesseary files for loading resourceses such as 
+Cakecake generates all nesseary files for loading resourceses such as 
 sprites and entities from predefined folders. The entities step and draw
-methods are automatically called, and can use the espresso API
+methods are automatically called. box2d is used automatically used for collision 
+checking.
 
-### Is espresso ready to use?
-Espresso is useable, but not very stable. The current release is really early.
+### Is cakecake ready to use?
+Cakecake is useable, but not very stable. I am still changing the API dayy
 
 ### What needs to be done?
 A documentation video for the use of the API
@@ -54,4 +54,6 @@ See more at: http://www.blog.bridgeutopiaweb.com/post/how-to-install-coffeescrip
 
 $ npm install -g coffee-script
 
-$ git clone git@github.com:mollerhoj/espresso.git
+$ git clone git@github.com:mollerhoj/cakecake.git
+
+

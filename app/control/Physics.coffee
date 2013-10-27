@@ -148,7 +148,6 @@ class Physics
   fix_def: null
   solid: null
   visible: false
-  PTM: 16
 
   constructor: ->
     @fix_def = new b2FixtureDef
@@ -188,7 +187,7 @@ class Physics
   setup_debug_draw: ->
     debugDraw = new b2DebugDraw()
     debugDraw.SetSprite(Game.context)
-    debugDraw.SetDrawScale(@PTM)
+    debugDraw.SetDrawScale(AppData.pixel_per_meter)
     debugDraw.SetFillAlpha(0.5)
     debugDraw.SetLineThickness(1.0)
     debugDraw.SetFlags(b2DebugDraw.e_shapeBit )
@@ -202,29 +201,28 @@ class Physics
 
   build_solid_line: (x1,y1,x2,y2) ->
     @fix_def.shape = new b2PolygonShape
-    @fix_def.shape.SetAsEdge(new b2Vec2(x1/@PTM, y1/@PTM), new b2Vec2(x2/@PTM, y2/@PTM))
-    @solid.CreateFixture(@fix_def);
+    @fix_def.shape.SetAsEdge(new b2Vec2(x1/AppData.pixel_per_meter, y1/AppData.pixel_per_meter), new b2Vec2(x2/AppData.pixel_per_meter, y2/AppData.pixel_per_meter))
+    @solid.CreateFixture(@fix_def)
 
-  build_solid_box: (x,y,w,h,rotation) ->
+  build_solid_box: (x,y,width,height,angle) ->
     @fix_def.shape = new b2PolygonShape
-    @fix_def.shape.SetAsOrientedBox w/(@PTM)/2, h/(@PTM)/2, new b2Vec2(x/@PTM,y/@PTM), -rotation/180*Math.PI
-    @solid.CreateFixture(@fix_def);
+    @fix_def.shape.SetAsOrientedBox width/(AppData.pixel_per_meter)/2, height/(AppData.pixel_per_meter)/2, new b2Vec2(x/AppData.pixel_per_meter,y/AppData.pixel_per_meter), -angle/180*Math.PI
+    @solid.CreateFixture(@fix_def)
 
-  build_solid_circle: (x,y,r) ->
+  build_solid_circle: (x,y,radius) ->
     @fix_def.shape = new b2CircleShape
-    @fix_def.shape.SetRadius r/@PTM
+    @fix_def.shape.SetRadius radius/AppData.pixel_per_meter
     console.log @fix_def.shape
-    @fix_def.shape.m_p = new b2Vec2(x/@PTM,y/@PTM)
-    @solid.CreateFixture(@fix_def);
+    @fix_def.shape.m_p = new b2Vec2(x/AppData.pixel_per_meter,y/AppData.pixel_per_meter)
+    @solid.CreateFixture(@fix_def)
 
-  build_dynamic: (x,y,w,h,r,physics) ->
-
+  build_dynamic: (x,y,width,height,radius,physics) ->
     if physics.shape == 'circle'
       shape = new b2CircleShape()
-      shape.SetRadius r/@PTM
+      shape.SetRadius radius/AppData.pixel_per_meter
     else
       shape = new b2PolygonShape()
-      shape.SetAsBox w/@PTM/2, h/@PTM/2
+      shape.SetAsBox width/AppData.pixel_per_meter/2, height/AppData.pixel_per_meter/2
 
     fd = new b2FixtureDef()
     fd.shape = shape
@@ -232,7 +230,7 @@ class Physics
     fd.friction = physics.friction
     fd.restitution = physics.restitution
     bd = new b2BodyDef()
-    bd.position.Set(x/@PTM, y/@PTM)
+    bd.position.Set(x/AppData.pixel_per_meter, y/AppData.pixel_per_meter)
 
     if physics.type == 'dynamic'
       bd.type = b2Body.b2_dynamicBody

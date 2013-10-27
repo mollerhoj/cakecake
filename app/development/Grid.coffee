@@ -13,21 +13,8 @@ class Grid
 
   constructor: ->
     @visible = AppData.grid_on
-
-    #   rx = @x-@width*2+@world_x % @width
-    #   ry = @y-@height*2+@world_y % @height
-    #   width_number = Math.floor(AppData.width*AppData.scale/ @width / Game.zoom_level)
-    #   height_number = Math.floor(AppData.height*AppData.scale / @height / Game.zoom_level)
-    #   #+60 is there to fix deep zoom level bug.. 
-    #   vertical_lines_length = (AppData.height*AppData.scale*@height) / Game.zoom_level
-    #   horizontal_lines_length = (AppData.width*AppData.scale*@width) / Game.zoom_level
-    #   Art.stroke_color('Gray')
-    #   Art.alpha 0.5
-    #   for x in [0...width_number]
-    #     Art.lineC(rx+x*@width,ry,rx+x*@width,ry+vertical_lines_length)
-    #   for y in [0...height_number]
-    #     Art.lineC(rx,ry+y*@height,rx+horizontal_lines_length,ry+y*@height)
-    #   Art.alpha 1
+    @width = AppData.pixel_per_meter
+    @height = AppData.pixel_per_meter
 
   draw: ->
     if @visible and @height > 1 and @width > 1
