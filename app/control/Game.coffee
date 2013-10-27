@@ -84,17 +84,17 @@ class Game
     canvas.addEventListener "touchmove", Keyboard.touch_move, false
 
   @requestAnimFrame: (callback) ->
-  window.requestAnimationFrame or
-  window.webkitRequestAnimationFrame or
-  window.mozRequestAnimationFrame or (callback) ->
-    window.setTimeout callback, 1000 / 60
+    window.requestAnimationFrame(callback) or
+    window.webkitRequestAnimationFrame(callback) or
+    window.mozRequestAnimationFrame(callback) or (callback) ->
+      window.setTimeout callback, 1000 / 60
 
   @draw: =>
     #Game.requestAnimFrame(Game.draw)
     #
     for world in Game.worlds
       world.draw()
-    requestAnimationFrame(Game.draw)
+    Game.requestAnimFrame(Game.draw)
 
   @run: =>
     for world in Game.worlds

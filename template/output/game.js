@@ -394,10 +394,10 @@
       return canvas.addEventListener("touchmove", Keyboard.touch_move, false);
     };
 
-    Game.requestAnimFrame = function(callback) {};
-
-    window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function(callback) {
-      return window.setTimeout(callback, 1000 / 60);
+    Game.requestAnimFrame = function(callback) {
+      return window.requestAnimationFrame(callback) || window.webkitRequestAnimationFrame(callback) || window.mozRequestAnimationFrame(callback) || function(callback) {
+        return window.setTimeout(callback, 1000 / 60);
+      };
     };
 
     Game.draw = function() {
@@ -407,7 +407,7 @@
         world = _ref[_i];
         world.draw();
       }
-      return requestAnimationFrame(Game.draw);
+      return Game.requestAnimFrame(Game.draw);
     };
 
     Game.run = function() {
