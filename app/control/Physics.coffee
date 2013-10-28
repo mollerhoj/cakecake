@@ -1,4 +1,3 @@
-
 b2ControllerEdge = Box2D.Dynamics.Controllers.b2ControllerEdge
 b2Mat22 = Box2D.Common.Math.b2Mat22
 b2Mat33 = Box2D.Common.Math.b2Mat33
@@ -145,76 +144,37 @@ Box2D.Common.Math.b2Vec2::cross = (vec) ->
 
 class Physics
   world: null
-  fix_def: null
-  solid: null
+  edges: null
   visible: false
-
+  time_step: 120
+  mouse_hitbox: null
+    
   constructor: ->
-    @fix_def = new b2FixtureDef
-    @fix_def.density = 1.0
-    @fix_def.friction = 0.5
-    @fix_def.restitution = 0.2
-
     @create_world()
     @setup_debug_draw()
-
-    solid_def = new b2BodyDef()
-    solid_def.position.Set(0,0)
-    @solid = @world.CreateBody(solid_def)
-    @solid.SetUserData('my_SOLID')
-
+    @setup_mouse_hitbox()
     @setup_contact_listener()
 
-  setup_contact_listener: ->
-    contact_listener = new b2ContactListener
-    contact_listener.BeginContact = (contact) =>
-      a = contact.GetFixtureA().GetBody().GetUserData()
-      b = contact.GetFixtureB().GetBody().GetUserData()
-      if a instanceof Entity and b instanceof Entity
-        a.hit_hash[b] = a
-        b.hit_hash[a] = b
-    contact_listener.EndContact = (contact) =>
-      a = contact.GetFixtureA().GetBody().GetUserData()
-      b = contact.GetFixtureB().GetBody().GetUserData()
-      if a instanceof Entity and b instanceof Entity
-        delete a.hit_hash[b]
-        delete b.hit_hash[a]
-    @world.SetContactListener(contact_listener)
-
-  create_world: ->
-    @world = new b2World(new b2Vec2(0.0, 60.0),true)
-
-  setup_debug_draw: ->
-    debugDraw = new b2DebugDraw()
-    debugDraw.SetSprite(Game.context)
-    debugDraw.SetDrawScale(AppData.pixel_per_meter)
-    debugDraw.SetFillAlpha(0.5)
-    debugDraw.SetLineThickness(1.0)
-    debugDraw.SetFlags(b2DebugDraw.e_shapeBit )
-    @world.SetDebugDraw(debugDraw)
+  setup_mouse_hitbox: ->
+    mouse_hitbox_def = new b2BodyDef()
+    mouse_hitbox_def.type = b2Body.b2_dynamicBody
+    @mouse_hitbox = @world.CreateBody(mouse_hitbox_def)
+    @mouse_hitbox.SetUserData('MOUSE')
+    fd = new b2FixtureDef
+    fd.shape = new b2PolygonShape
+    fd.shape.SetAsBox 1/AppData.pixel_per_meter, 1/AppData.pixel_per_meter
+    fd.isSensor = true
+    @mouse_hitbox.CreateFixture(fd)
 
   build_edges: ->
-    @build_solid_line(0,0,AppData.width,0)
-    @build_solid_line(0,AppData.height,AppData.width,AppData.height)
-    @build_solid_line(0,0,0,AppData.height)
-    @build_solid_line(AppData.width,0,AppData.width,AppData.height)
-
-  build_solid_line: (x1,y1,x2,y2) ->
-    @fix_def.shape = new b2PolygonShape
-    @fix_def.shape.SetAsEdge(new b2Vec2(x1/AppData.pixel_per_meter, y1/AppData.pixel_per_meter), new b2Vec2(x2/AppData.pixel_per_meter, y2/AppData.pixel_per_meter))
-    @solid.CreateFixture(@fix_def)
-
-  build_solid_box: (x,y,width,height,angle) ->
-    @fix_def.shape = new b2PolygonShape
-    @fix_def.shape.SetAsOrientedBox width/(AppData.pixel_per_meter)/2, height/(AppData.pixel_per_meter)/2, new b2Vec2(x/AppData.pixel_per_meter,y/AppData.pixel_per_meter), -angle/180*Math.PI
-    @solid.CreateFixture(@fix_def)
-
-  build_solid_circle: (x,y,radius) ->
-    @fix_def.shape = new b2CircleShape
-    @fix_def.shape.SetRadius radius/AppData.pixel_per_meter
-    console.log @fix_def.shape
-    @fix_def.shape.m_p = new b2Vec2(x/AppData.pixel_per_meter,y/AppData.pixel_per_meter)
-    @solid.CreateFixture(@fix_def)
+    edges_def = new b2BodyDef()
+    @edges = @world.CreateBody(edges_def)
+    @edges.SetUserData('EDGE')
+    fix_def = new b2FixtureDef
+    @build_edge(0,0,AppData.width,0,fix_def)
+    @build_edge(0,AppData.height,AppData.width,AppData.height,fix_def)
+    @build_edge(0,0,0,AppData.height,fix_def)
+    @build_edge(AppData.width,0,AppData.width,AppData.height,fix_def)
 
   build_dynamic: (x,y,width,height,radius,physics) ->
     if physics.shape == 'circle'
@@ -232,6 +192,7 @@ class Physics
     bd = new b2BodyDef()
     bd.position.Set(x/AppData.pixel_per_meter, y/AppData.pixel_per_meter)
 
+    #types
     if physics.type == 'dynamic'
       bd.type = b2Body.b2_dynamicBody
     else
@@ -251,3 +212,55 @@ class Physics
       Game.context.translate(x,y)
       @world.DrawDebugData()
       Game.context.restore()
+
+  step: ->
+    @mouse_hitbox_set_position()
+    @world.Step(1/@time_step, 3, 2)
+
+  #private 
+  mouse_hitbox_set_position: ->
+    x = Math.max(0,Math.min(AppData.width,Keyboard.MOUSE_X))
+    y = Math.max(0,Math.min(AppData.height,Keyboard.MOUSE_Y))
+    @mouse_hitbox.SetPosition(new b2Vec2(x/AppData.pixel_per_meter,y/AppData.pixel_per_meter))
+
+  setup_contact_listener: ->
+    contact_listener = new b2ContactListener
+    contact_listener.BeginContact = (contact) =>
+      a = contact.GetFixtureA().GetBody().GetUserData()
+      b = contact.GetFixtureB().GetBody().GetUserData()
+      if a instanceof Entity and b instanceof Entity
+        a.hit_hash[b.unique] = b
+        b.hit_hash[a.unique] = a
+      else if a == 'MOUSE' and b instanceof Entity
+        b.hit_hash['MOUSE'] = true
+      else if b == 'MOUSE' and a instanceof Entity
+        a.hit_hash['MOUSE'] = true
+    contact_listener.EndContact = (contact) =>
+      a = contact.GetFixtureA().GetBody().GetUserData()
+      b = contact.GetFixtureB().GetBody().GetUserData()
+      if a instanceof Entity and b instanceof Entity
+        delete a.hit_hash[b.unique]
+        delete b.hit_hash[a.unique]
+      else if a == 'MOUSE' and b instanceof Entity
+        delete b.hit_hash['MOUSE']
+      else if b == 'MOUSE' and a instanceof Entity
+        delete a.hit_hash['MOUSE']
+    @world.SetContactListener(contact_listener)
+
+  create_world: ->
+    @world = new b2World(new b2Vec2(0,0),true)
+
+  setup_debug_draw: ->
+    debugDraw = new b2DebugDraw()
+    debugDraw.SetSprite(Game.context)
+    debugDraw.SetDrawScale(AppData.pixel_per_meter)
+    debugDraw.SetFillAlpha(0.5)
+    debugDraw.SetLineThickness(1.0)
+    debugDraw.SetFlags(b2DebugDraw.e_shapeBit )
+    @world.SetDebugDraw(debugDraw)
+
+  build_edge: (x1,y1,x2,y2,fix_def) ->
+    fix_def.shape = new b2PolygonShape
+    fix_def.shape.SetAsEdge(new b2Vec2(x1/AppData.pixel_per_meter, y1/AppData.pixel_per_meter), new b2Vec2(x2/AppData.pixel_per_meter, y2/AppData.pixel_per_meter))
+    @edges.CreateFixture(fix_def)
+

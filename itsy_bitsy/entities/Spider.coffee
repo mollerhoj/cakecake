@@ -13,11 +13,12 @@ class Spider extends Entity
   body: null
 
   radius: 5
-  speed: 2
+  speed: 3
   jump_power: 800
   crawl_speed: 0.1
   aim: 45
   aim2: 90
+  gravity: 400
 
   rope: []
   rope_precision: 4 #No shorter than any blocks width
@@ -25,8 +26,12 @@ class Spider extends Entity
 
   joint: null
   bullet: null
-  
+  webgrap_body: null
+
   init: ->
+    @body.ApplyForce(new b2Vec2(0,@gravity),@body.GetWorldCenter())
+    webgrap_bd = new b2BodyDef()
+    @webgrap_body = @world.physics.world.CreateBody(webgrap_bd)
     @joint_last_angle = @angle+90
     @rope = []
     @shoot_bullet()
@@ -48,7 +53,7 @@ class Spider extends Entity
     p = p.Copy()
     p.divide(16)
     jointDef = new b2DistanceJointDef()
-    jointDef.Initialize(@world.physics.solid, @body, p, @body.GetWorldCenter())
+    jointDef.Initialize(@webgrap_body, @body, p, @body.GetWorldCenter())
     jointDef.collideConnected = true
     @joint = @world.physics.world.CreateJoint(jointDef)
 
@@ -138,8 +143,6 @@ class Spider extends Entity
           @joint.SetLength(@joint.GetLength()-@crawl_speed)
 
     super()
-    if Keyboard.press('F')
-      console.log @bullet, @joint, @rope
 
     if @bullet
       @rope[0] = new b2Vec2(@bullet.x,@bullet.y)

@@ -1,5 +1,4 @@
 class Menu_1D extends Entity
-
   index: 0
   button_n: 2
   buttons: []
@@ -21,10 +20,8 @@ class Menu_1D extends Entity
     for i in [0...@button_n]
       b = @world.spawn('Button')
       b.id = i
-      b.x = 60
-      b.w = 100
-      b.h = 20
-      b.y = @y + i * @button_space
+      b.set_x(60)
+      b.set_y(@y + i * @button_space)
       b.sprite = null
       b.text = new Text('Play')
       b.text.font = 'Norwester'
@@ -42,7 +39,7 @@ class Menu_1D extends Entity
   press: (i) ->
     if @index == 0
       @destroy()
-      if Storage.load('level_n_reached') && Storage.load('level_n_reached') > 1
+      if true #Storage.load('level_n_reached') && Storage.load('level_n_reached') > 1
         @spawn('Menu_2D')
       else
         @world.destroy_all()
@@ -74,9 +71,6 @@ class Menu_1D extends Entity
     @credit.draw()
     @spider.draw()
     @title.draw()
-
-    for button in @buttons
-      button.draw()
 
   destroy: ->
     super()

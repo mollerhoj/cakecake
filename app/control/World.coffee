@@ -7,19 +7,18 @@ class World
   x: 0
   y: 0
   pause: false
-  physics: null
   factory: null
   art: null
+  physics: null
   background: null
   current_level: ''
   current_level_n: -1
 
   constructor: ->
     @background = new Sprite('Background',AppData.width/2,AppData.height/2)
-    if AppData.physics
-      @physics = new Physics
     @art = new Art(this)
-    @factory = new Factory
+    @physics = new Physics
+    @factory = new EntityFactory(this,@physics)
 
   next_level: =>
     if @current_level_n == -1
@@ -68,7 +67,9 @@ class World
 
   # Spawn new
   spawn: (name,x,y) ->
-    return @factory.spawn(name,x,y)
+    entity = @factory.spawn(name,x,y)
+    @_entities.push (entity)
+    return entity
 
   entities_of_class: (c) ->
     res = []
@@ -81,6 +82,19 @@ class World
 
   exists: (c) ->
     return @number_of(c) > 0
+
+  nearest: (c,self) ->
+    nearest = null
+    for e in @_entities
+      if e.name == c and e != self
+        distance = @entities_distance(self,e)
+        if shortest == undefined || distance < shortest
+          nearest = e
+          shortest = distance
+    return nearest
+
+  entities_distance: (e1,e2) ->
+    return Math.distance_2d(e1.x,e1.y,e2.x,e2.y)
 
   # Draw all the _entities
   draw: ->
@@ -107,7 +121,7 @@ class World
     Keyboard.step()
    
     if @pause == false
-      @physics.world.Step(1/120, 3, 2);
+      @physics.step()
       for entity in @_entities
         if typeof entity.step is "function"
           entity.step()

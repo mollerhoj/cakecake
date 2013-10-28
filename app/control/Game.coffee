@@ -15,7 +15,6 @@ class Game
     return w
 
   @init:(mode) ->
-    console.log 'init'
     @mode = mode
     #Create canvas:
     Game.context = Game.create_canvas()

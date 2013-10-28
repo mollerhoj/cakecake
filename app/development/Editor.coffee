@@ -67,12 +67,15 @@ class Editor
     @level = @level_selector.value
     @world.destroy_all()
     @world.load_level(@level)
+    @level_selector.blur()
 
   save_type_change: =>
     @builder.save_type = @save_type_selector.value
+    @save_type_selector.blur()
 
   debug_draw_change: =>
     @world.physics.visible = @debug_draw_checkbox.checked
+    @debug_draw_checkbox.blur()
 
   save: =>
     level = @level_selector.value
@@ -82,21 +85,28 @@ class Editor
 
   entity_change: =>
     @builder.entity = @entity_selector.value
+    @entity_selector.blur()
     
   grid_move: =>
     @grid.x = parseInt @grid_x.value
     @grid.y = parseInt  @grid_y.value
     @grid.width = parseInt @grid_width.value
     @grid.height = parseInt @grid_height.value
+    @grid_x.blur()
+    @grid_y.blur()
+    @grid_width.blur()
+    @grid_height.blur()
 
   toggle_grid: =>
     if @grid.visible
       @grid.visible = false
     else
       @grid.visible = true
+    @grid_toggle.blur()
 
   toggle_pause: =>
     @set_pause(!Game.pause)
+    @pause_button.blur()
 
   set_pause: (pause) =>
     Game.pause = pause

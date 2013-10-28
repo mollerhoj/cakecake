@@ -1,8 +1,14 @@
 class Button extends Entity
+  physics:
+    shape: 'rectangle'
+  body: null
 
   text: null
   menu: null
   id: 0
+
+  init: ->
+    @world.physics.build_edges()
 
   draw: ->
     super()
@@ -11,9 +17,9 @@ class Button extends Entity
     @text.draw()
 
   step: ->
-    if @mouse_hits()
+    if @touch('MOUSE')
       if @menu
-        if Keyboard.mouse_moves
-          @menu.set_index(@id)
         if Keyboard.press('MOUSE_LEFT')
           @menu.press(@id)
+        if Keyboard.mouse_moves
+          @menu.set_index(@id)

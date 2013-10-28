@@ -1,5 +1,4 @@
 - All folders should be able to have subpaths
-- Collision between shapes: image collision
 - watch for changes
 - RoR website to push games to.
 - GameController seperation
@@ -7,3 +6,82 @@
 - Art remove?
 - Text include variables
 - Pause reset entity positions
+
+Fix the set_x, set_y, set_width etc of entity
+Make a default font
+Make draw functions functional?
+Cakefile split
+
+facts:
+  Physics require a global world class!
+
+  world -> entity -> drawable: bad idea?
+
+  drawables: no need to initialize
+
+  button: entity, contained by another entity!
+
+  font: define and reuse?
+
+IDEA:
+drawable: parent for text, sprite, button?
+
+--- !!!! entities: have a collection of drawables?
+
+lines = []
+
+for i in a
+
+for i in a
+  draw line x1y1 -> x2y2
+
+entity -> 
+  @line.draw(d)
+  @rectangle.draw(d)
+  @text.draw(d)
+  @sprite.draw(d)
+
+  entities
+  body
+  knows world
+
+'holds entities'            'holds entities and drawables'    'nothing'
+world <------------------> entity (extends drawable) --> drawables
+
+entity -> ask for spawn 
+          ask world questions
+          ask physics questions
+          ask art to draw
+
+'root of entities'
+world -> 
+         answer questions about all entities
+         safe remove entities
+         spawn entities (using factory)
+
+         holds physics
+
+
+         (step entities)
+
+         #remove:
+         draw background
+         draw physics
+
+director <------> rule
+
+ruler (extends entity?) -> knows director.
+
+director ->
+         create (global rule)
+         create rule
+         create world
+         level change/load etc
+         load level. (by using loader)
+
+entityfactory ->
+        spawn entity
+
+art ->
+  static draw
+

@@ -32,8 +32,8 @@ class Menu_2D extends Entity
     @heading.font_size = 80
 
     b = @world.spawn('Button')
-    b.x = @x-@button_x_space
-    b.y = @y
+    b.set_x(@x-@button_x_space)
+    b.set_y(@y)
     b.sprite = null
     b.text = new Text('Back')
     b.text.font = 'Norwester'
@@ -49,12 +49,12 @@ class Menu_2D extends Entity
     for i in [1..@button_n]
       b = @buttons[i]
       if b
+        b.id = i
         b.text.align = 'center'
         b.text.font = 'Norwester'
         b.text.font_size = 23
-        b.y = @y + Math.floor((i-1) / @cols) * @button_y_space
-        b.x = @x + ((i-1) % @cols) * @button_x_space
-        b.id = i
+        b.set_y(@y + Math.floor((i-1) / @cols) * @button_y_space)
+        b.set_x(@x + ((i-1) % @cols) * @button_x_space)
         b.menu = this
 
   set_index: (i) =>
