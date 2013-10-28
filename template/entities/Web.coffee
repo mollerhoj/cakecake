@@ -1,1 +1,0 @@
-class Web extends Entity
