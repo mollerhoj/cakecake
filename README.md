@@ -43,7 +43,7 @@ With homebrew:
 
 $ brew update $ brew install node
 
-Add /usr/local/lib/node to your NODE_PATH environment variable. See more at: http://www.blog.bridgeutopiaweb.com/post/how-to-install-coffeescript-on-mac-os-x#sthash.xZZ2Cvg8.dpuf
+Add /usr/local/lib/node to your NODE_PATH environment variable. See more at: http://c.kat.pe/post/how-to-install-coffeescript-on-mac-os-x
 
 $ npm install -g coffee-script
 
